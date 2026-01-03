@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="py-20">
+    <div class="max-w-4xl mx-auto px-6">
+        <h1 class="text-4xl font-bold mb-8 gradient-text">About Me</h1>
+        <div class="prose prose-invert max-w-none">
+            <p class="text-xl text-gray-300 mb-6">
+                I am passionate about creating beautiful, efficient desktop environments 
+                that combine aesthetics with productivity.
+            </p>
+            <p class="text-gray-400 mb-6">
+                My dotfiles represent years of refinement, featuring dynamic color theming 
+                with pywal, custom keyboard shortcuts optimized for vim-style navigation, 
+                and seamless integration between tools.
+            </p>
+            <h2 class="text-2xl font-semibold mt-12 mb-4">Tech Stack</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                <div class="bg-dark-800 rounded-lg p-4 text-center border border-dark-600">
+                    <p class="font-medium">Hyprland</p>
+                    <p class="text-sm text-gray-500">Linux WM</p>
+                </div>
+                <div class="bg-dark-800 rounded-lg p-4 text-center border border-dark-600">
+                    <p class="font-medium">Yabai</p>
+                    <p class="text-sm text-gray-500">macOS WM</p>
+                </div>
+                <div class="bg-dark-800 rounded-lg p-4 text-center border border-dark-600">
+                    <p class="font-medium">Pywal</p>
+                    <p class="text-sm text-gray-500">Theming</p>
+                </div>
+                <div class="bg-dark-800 rounded-lg p-4 text-center border border-dark-600">
+                    <p class="font-medium">Python</p>
+                    <p class="text-sm text-gray-500">Automation</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

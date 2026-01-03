@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="min-h-[80vh] flex items-center">
+    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+        <div>
+            <h1 class="text-5xl font-bold mb-6">
+                Hi, I am <span class="gradient-text">Duma</span>
+            </h1>
+            <p class="text-xl text-gray-400 mb-8">
+                I create beautiful and functional desktop environments.
+                Check out my dotfiles for Hyprland and Yabai.
+            </p>
+            <div class="flex gap-4">
+                <a href="/dotfiles" class="px-6 py-3 bg-accent-500 hover:bg-accent-600 rounded-lg font-medium transition">
+                    View Dotfiles
+                </a>
+                <a href="https://github.com/duma799" class="px-6 py-3 border border-dark-600 hover:border-accent-500 rounded-lg font-medium transition">
+                    GitHub
+                </a>
+            </div>
+        </div>
+        <div class="bg-dark-800 rounded-xl p-6 border border-dark-600">
+            <div class="flex gap-2 mb-4">
+                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+            </div>
+            <pre class="mono text-sm text-gray-300"><code><span class="text-accent-500">$</span> neofetch
+<span class="text-purple-400">OS:</span> macOS / Arch Linux
+<span class="text-purple-400">WM:</span> Yabai / Hyprland
+<span class="text-purple-400">Shell:</span> zsh
+<span class="text-purple-400">Editor:</span> VSCode / Neovim
+<span class="text-purple-400">Theme:</span> Pywal Dynamic</code></pre>
+        </div>
+    </div>
+</section>
+
+<section class="py-20 bg-dark-800">
+    <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-12 text-center">Featured Configs</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+            <a href="/dotfiles/keybinds?platform=yabai" class="group bg-dark-700 rounded-xl p-6 border border-dark-600 hover:border-accent-500 transition">
+                <h3 class="text-xl font-semibold mb-2 group-hover:text-accent-500">Yabai (macOS)</h3>
+                <p class="text-gray-400">Tiling window manager with SketchyBar, dynamic borders, and pywal theming.</p>
+            </a>
+            <a href="/dotfiles/keybinds?platform=hyprland" class="group bg-dark-700 rounded-xl p-6 border border-dark-600 hover:border-accent-500 transition">
+                <h3 class="text-xl font-semibold mb-2 group-hover:text-accent-500">Hyprland (Linux)</h3>
+                <p class="text-gray-400">Modern Wayland compositor with Waybar, custom gestures, and pywal integration.</p>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
