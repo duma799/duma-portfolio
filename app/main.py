@@ -64,3 +64,15 @@ async def configs_page(request: Request):
     return templates.TemplateResponse(
         "dotfiles/configs.html", {"request": request, "title": "Configs"}
     )
+
+
+@app.get("/dotfiles/{platform}")
+async def platform_page(request: Request, platform: str):
+    platform_titles = {
+        "yabai": "Yabai (macOS)",
+        "hyprland": "Hyprland (Linux)",
+    }
+    title = platform_titles.get(platform, platform.capitalize())
+    return templates.TemplateResponse(
+        "dotfiles/platform.html", {"request": request, "title": title, "platform": platform}
+    )

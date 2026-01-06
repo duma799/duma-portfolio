@@ -1,0 +1,192 @@
+{% extends "base.html" %} {% block head %}
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+<style>
+    .readme-content {
+        line-height: 1.7;
+    }
+    .readme-content h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #404040;
+    }
+    .readme-content h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+    }
+    .readme-content h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    .readme-content p {
+        margin-bottom: 1rem;
+        color: #b0b0b0;
+    }
+    .readme-content ul,
+    .readme-content ol {
+        margin-bottom: 1rem;
+        padding-left: 1.5rem;
+        color: #b0b0b0;
+    }
+    .readme-content li {
+        margin-bottom: 0.25rem;
+    }
+    .readme-content code {
+        background: #1a1a24;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-size: 0.9em;
+        color: #7aa2f7;
+    }
+    .readme-content pre {
+        background: #1a1a24;
+        padding: 1rem;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin-bottom: 1rem;
+        position: relative;
+    }
+    .readme-content pre code {
+        background: none;
+        padding: 0;
+    }
+    .copy-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        padding: 0.4rem 0.6rem;
+        background: #2a2a3a;
+        border: 1px solid #404040;
+        border-radius: 4px;
+        color: #808080;
+        font-size: 0.75rem;
+        cursor: pointer;
+        opacity: 0;
+        transition:
+            opacity 0.2s,
+            background 0.2s,
+            color 0.2s;
+    }
+    .readme-content pre:hover .copy-btn {
+        opacity: 1;
+    }
+    .copy-btn:hover {
+        background: #3a3a4a;
+        color: #e0e0e0;
+    }
+    .copy-btn.copied {
+        color: #27c93f;
+    }
+    .readme-content a {
+        color: #7aa2f7;
+        text-decoration: underline;
+    }
+    .readme-content a:hover {
+        color: #89b4fa;
+    }
+    .readme-content img {
+        max-width: 100%;
+        border-radius: 8px;
+        margin: 1rem 0;
+    }
+    .readme-content blockquote {
+        border-left: 4px solid #7aa2f7;
+        padding-left: 1rem;
+        margin: 1rem 0;
+        color: #808080;
+    }
+</style>
+{% endblock %} {% block content %}
+<section class="py-20">
+    <div class="w-full px-8">
+        <div class="mb-8">
+            <a
+                href="/dotfiles"
+                class="text-gray-400 hover:text-white transition"
+            >
+                &larr; Back to Dotfiles
+            </a>
+        </div>
+
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-4xl font-bold gradient-text">{{ title }}</h1>
+            <a
+                href="/dotfiles/keybinds?platform={{ platform }}"
+                class="px-6 py-3 bg-accent-500 hover:bg-accent-600 rounded-lg font-medium transition"
+            >
+                View Keybinds
+            </a>
+        </div>
+
+        <div class="bg-dark-800 rounded-xl p-8 border border-dark-600">
+            <div id="readme-loading" class="text-center py-12">
+                <div
+                    class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-accent-500"
+                ></div>
+                <p class="text-gray-400 mt-4">Loading README...</p>
+            </div>
+            <div id="readme-content" class="readme-content hidden"></div>
+            <div id="readme-error" class="text-center py-12 hidden">
+                <p class="text-red-400">Failed to load README</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} {% block scripts %}
+<script>
+    const platform = "{{ platform }}";
+
+    function addCopyButtons() {
+        const clipboardIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+        const checkIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+
+        const codeBlocks = document.querySelectorAll(".readme-content pre");
+        codeBlocks.forEach((pre) => {
+            const btn = document.createElement("button");
+            btn.className = "copy-btn";
+            btn.innerHTML = clipboardIcon;
+            btn.addEventListener("click", async () => {
+                const code = pre.querySelector("code");
+                const text = code ? code.textContent : pre.textContent;
+                await navigator.clipboard.writeText(text);
+                btn.innerHTML = checkIcon;
+                btn.classList.add("copied");
+                setTimeout(() => {
+                    btn.innerHTML = clipboardIcon;
+                    btn.classList.remove("copied");
+                }, 2000);
+            });
+            pre.appendChild(btn);
+        });
+    }
+
+    async function loadReadme() {
+        const loading = document.getElementById("readme-loading");
+        const content = document.getElementById("readme-content");
+        const error = document.getElementById("readme-error");
+
+        try {
+            const response = await fetch(`/api/github/readme/${platform}`);
+            if (!response.ok) throw new Error("Failed to fetch");
+
+            const data = await response.json();
+            content.innerHTML = DOMPurify.sanitize(marked.parse(data.content));
+            addCopyButtons();
+
+            loading.classList.add("hidden");
+            content.classList.remove("hidden");
+        } catch (e) {
+            loading.classList.add("hidden");
+            error.classList.remove("hidden");
+        }
+    }
+
+    loadReadme();
+</script>
+{% endblock %}
