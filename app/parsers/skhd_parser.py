@@ -1,17 +1,20 @@
 from __future__ import annotations
-from typing import Optional, List
-from app.parsers.base import BaseKeybindParser
+
+from typing import List, Optional
+
 from app.models.keybind import Keybind
+from app.parsers.base import BaseKeybindParser
+
 
 class SkhdParser(BaseKeybindParser):
     def __init__(self):
         self.platform = "yabai"
-    
+
     def parse(self, content: str) -> List[Keybind]:
         keybinds = []
         current_category = "General"
-        
-        for line in content.split(chr(10)):
+
+        for line in content.split("\n"):
             line = line.strip()
             if not line:
                 continue
@@ -25,7 +28,7 @@ class SkhdParser(BaseKeybindParser):
                 if keybind:
                     keybinds.append(keybind)
         return keybinds
-    
+
     def parse_skhd_line(self, line: str, category: str) -> Optional[Keybind]:
         try:
             hotkey_part, command = line.split(" : ", 1)
@@ -52,10 +55,10 @@ class SkhdParser(BaseKeybindParser):
             )
         except ValueError:
             return None
-    
+
     def command_to_action(self, cmd: str) -> str:
         if "open -a" in cmd:
-            app = cmd.split("open -a")[-1].strip().strip(chr(34))
+            app = cmd.split("open -a")[-1].strip().strip('"')
             return f"Open {app}"
         elif "yabai -m window --focus" in cmd:
             direction = cmd.split("--focus")[-1].strip()
