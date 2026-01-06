@@ -21,19 +21,33 @@
 </section>
 {% endblock %} {% block scripts %}
 <script>
+    function escapeHtml(text) {
+        if (!text) return "";
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
     document.body.addEventListener("htmx:afterSwap", function (evt) {
         if (evt.detail.target.id === "projects-list") {
             const repos = JSON.parse(evt.detail.xhr.responseText);
             let html = "";
             repos.slice(0, 9).forEach((repo) => {
+                const name = escapeHtml(repo.name);
+                const description =
+                    escapeHtml(repo.description) || "No description";
+                const language = escapeHtml(repo.language);
+                const url = encodeURI(repo.html_url);
+                const stars = parseInt(repo.stargazers_count, 10) || 0;
+
                 html += `
-                <a href="${repo.html_url}" target="_blank"
+                <a href="${url}" target="_blank" rel="noopener noreferrer"
                    class="bg-dark-800 rounded-xl p-6 border border-dark-600 hover:border-accent-500 transition block">
-                    <h3 class="text-xl font-semibold mb-2">${repo.name}</h3>
-                    <p class="text-gray-400 text-sm mb-4">${repo.description || "No description"}</p>
+                    <h3 class="text-xl font-semibold mb-2">${name}</h3>
+                    <p class="text-gray-400 text-sm mb-4">${description}</p>
                     <div class="flex items-center gap-4 text-sm text-gray-500">
-                        ${repo.language ? `<span>${repo.language}</span>` : ""}
-                        <span>${repo.stargazers_count} stars</span>
+                        ${language ? `<span>${language}</span>` : ""}
+                        <span>${stars} stars</span>
                     </div>
                 </a>
             `;
