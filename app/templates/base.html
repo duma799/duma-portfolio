@@ -17,15 +17,27 @@
                     extend: {
                         colors: {
                             dark: {
-                                900: "#0a0a0f",
-                                800: "#12121a",
-                                700: "#1a1a24",
-                                600: "#22222e",
+                                950: "#0a0a0f",
+                                900: "#1a1b26",
+                                800: "#16161e",
+                                700: "#1f2335",
+                                600: "#292e42",
+                                500: "#3b4261",
                             },
                             accent: {
-                                500: "#7aa2f7",
-                                400: "#89b4fa",
-                                600: "#5d7cbf",
+                                blue: "#7aa2f7",
+                                purple: "#bb9af7",
+                                cyan: "#7dcfff",
+                                green: "#9ece6a",
+                                orange: "#ff9e64",
+                                red: "#f7768e",
+                                yellow: "#e0af68",
+                            },
+                            text: {
+                                primary: "#c0caf5",
+                                secondary: "#a9b1d6",
+                                muted: "#565f89",
+                                dark: "#414868",
                             },
                         },
                     },
@@ -82,9 +94,12 @@
         <link rel="stylesheet" href="/static/css/terminal.css" />
         {% block head %}{% endblock %}
     </head>
-    <body class="bg-dark-900 text-gray-200 min-h-screen">
+    <body class="bg-dark-950 text-text-primary min-h-screen">
+        <canvas id="particles-canvas" class="particles-bg"></canvas>
         {% include "partials/nav.html" %}
         <main class="pt-16">{% block content %}{% endblock %}</main>
-        {% include "partials/footer.html" %} {% block scripts %}{% endblock %}
+        {% include "partials/footer.html" %}
+        <script src="/static/js/particles.js"></script>
+        {% block scripts %}{% endblock %}
     </body>
 </html>
