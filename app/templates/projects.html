@@ -2,7 +2,7 @@
 <section class="py-20">
     <div class="max-w-6xl mx-auto px-6">
         <h1 class="text-4xl font-bold mb-4 gradient-text">Projects</h1>
-        <p class="text-gray-400 mb-12">
+        <p class="text-text-secondary mb-12">
             My open source projects and dotfiles configurations.
         </p>
 
@@ -13,7 +13,7 @@
             hx-trigger="load"
             hx-swap="innerHTML"
         >
-            <div class="col-span-full text-center py-12 text-gray-500">
+            <div class="col-span-full text-center py-12 text-text-muted">
                 Loading projects...
             </div>
         </div>
@@ -42,10 +42,10 @@
 
                 html += `
                 <a href="${url}" target="_blank" rel="noopener noreferrer"
-                   class="bg-dark-800 rounded-xl p-6 border border-dark-600 hover:border-accent-500 transition block">
-                    <h3 class="text-xl font-semibold mb-2">${name}</h3>
-                    <p class="text-gray-400 text-sm mb-4">${description}</p>
-                    <div class="flex items-center gap-4 text-sm text-gray-500">
+                   class="bg-dark-700 rounded-xl p-6 border border-dark-600 hover:border-accent-blue hover:bg-dark-600 transition-all duration-300 block group">
+                    <h3 class="text-xl font-semibold mb-2 text-text-primary group-hover:text-accent-blue transition">${name}</h3>
+                    <p class="text-text-secondary text-sm mb-4">${description}</p>
+                    <div class="flex items-center gap-4 text-sm text-text-muted">
                         ${language ? `<span>${language}</span>` : ""}
                         <span>${stars} stars</span>
                     </div>
