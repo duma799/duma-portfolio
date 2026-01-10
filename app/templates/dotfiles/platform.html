@@ -10,61 +10,66 @@
         font-weight: 700;
         margin-bottom: 1rem;
         padding-bottom: 0.5rem;
-        border-bottom: 1px solid #404040;
+        border-bottom: 1px solid #292e42;
+        color: #c0caf5;
     }
     .readme-content h2 {
         font-size: 1.5rem;
         font-weight: 600;
         margin-top: 2rem;
         margin-bottom: 0.75rem;
+        color: #c0caf5;
     }
     .readme-content h3 {
         font-size: 1.25rem;
         font-weight: 600;
         margin-top: 1.5rem;
         margin-bottom: 0.5rem;
+        color: #c0caf5;
     }
     .readme-content p {
         margin-bottom: 1rem;
-        color: #b0b0b0;
+        color: #a9b1d6;
     }
     .readme-content ul,
     .readme-content ol {
         margin-bottom: 1rem;
         padding-left: 1.5rem;
-        color: #b0b0b0;
+        color: #a9b1d6;
     }
     .readme-content li {
         margin-bottom: 0.25rem;
     }
     .readme-content code {
-        background: #1a1a24;
+        background: #1f2335;
         padding: 0.2rem 0.4rem;
         border-radius: 4px;
         font-size: 0.9em;
         color: #7aa2f7;
     }
     .readme-content pre {
-        background: #1a1a24;
+        background: #1a1b26;
         padding: 1rem;
         border-radius: 8px;
         overflow-x: auto;
         margin-bottom: 1rem;
         position: relative;
+        border: 1px solid #292e42;
     }
     .readme-content pre code {
         background: none;
         padding: 0;
+        color: #a9b1d6;
     }
     .copy-btn {
         position: absolute;
         top: 0.5rem;
         right: 0.5rem;
         padding: 0.4rem 0.6rem;
-        background: #2a2a3a;
-        border: 1px solid #404040;
+        background: #292e42;
+        border: 1px solid #3b4261;
         border-radius: 4px;
-        color: #808080;
+        color: #565f89;
         font-size: 0.75rem;
         cursor: pointer;
         opacity: 0;
@@ -77,18 +82,18 @@
         opacity: 1;
     }
     .copy-btn:hover {
-        background: #3a3a4a;
-        color: #e0e0e0;
+        background: #3b4261;
+        color: #c0caf5;
     }
     .copy-btn.copied {
-        color: #27c93f;
+        color: #9ece6a;
     }
     .readme-content a {
         color: #7aa2f7;
         text-decoration: underline;
     }
     .readme-content a:hover {
-        color: #89b4fa;
+        color: #7dcfff;
     }
     .readme-content img {
         max-width: 100%;
@@ -99,7 +104,7 @@
         border-left: 4px solid #7aa2f7;
         padding-left: 1rem;
         margin: 1rem 0;
-        color: #808080;
+        color: #565f89;
     }
 </style>
 {% endblock %} {% block content %}
@@ -108,7 +113,7 @@
         <div class="mb-8">
             <a
                 href="/dotfiles"
-                class="text-gray-400 hover:text-white transition"
+                class="text-text-muted hover:text-text-primary transition"
             >
                 &larr; Back to Dotfiles
             </a>
@@ -118,22 +123,22 @@
             <h1 class="text-4xl font-bold gradient-text">{{ title }}</h1>
             <a
                 href="/dotfiles/keybinds?platform={{ platform }}"
-                class="px-6 py-3 bg-accent-500 hover:bg-accent-600 rounded-lg font-medium transition"
+                class="px-6 py-3 bg-accent-blue hover:bg-accent-blue/80 rounded-lg font-medium transition text-dark-900"
             >
                 View Keybinds
             </a>
         </div>
 
-        <div class="bg-dark-800 rounded-xl p-8 border border-dark-600">
+        <div class="bg-dark-700 rounded-xl p-8 border border-dark-600">
             <div id="readme-loading" class="text-center py-12">
                 <div
-                    class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-accent-500"
+                    class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-accent-blue"
                 ></div>
-                <p class="text-gray-400 mt-4">Loading README...</p>
+                <p class="text-text-muted mt-4">Loading README...</p>
             </div>
             <div id="readme-content" class="readme-content hidden"></div>
             <div id="readme-error" class="text-center py-12 hidden">
-                <p class="text-red-400">Failed to load README</p>
+                <p class="text-accent-red">Failed to load README</p>
             </div>
         </div>
     </div>
