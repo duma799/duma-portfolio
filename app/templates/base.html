@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en" class="dark scroll-smooth">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -86,9 +86,29 @@
                 font-family: "JetBrains Mono", monospace;
             }
             .gradient-text {
-                background: linear-gradient(135deg, #7aa2f7, #bb9af7);
+                background: linear-gradient(
+                    135deg,
+                    #7aa2f7,
+                    #bb9af7,
+                    #7dcfff,
+                    #bb9af7,
+                    #7aa2f7
+                );
+                background-size: 300% 300%;
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
+                animation: gradient-shift 6s ease infinite;
+            }
+            @keyframes gradient-shift {
+                0% {
+                    background-position: 0% 50%;
+                }
+                50% {
+                    background-position: 100% 50%;
+                }
+                100% {
+                    background-position: 0% 50%;
+                }
             }
         </style>
         <link rel="stylesheet" href="/static/css/terminal.css" />
