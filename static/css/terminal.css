@@ -160,7 +160,7 @@ footer {
     background: linear-gradient(
         90deg,
         transparent,
-        rgba(220, 230, 255, 0.2),
+        rgba(255, 255, 255, 0.3),
         transparent
     );
     transform: translateX(-100%) translateY(-100%) rotate(45deg);
@@ -169,10 +169,12 @@ footer {
 
 .btn-shine:hover {
     color: #ffffff;
-    border-color: #e0e8ff;
+    border-color: rgba(255, 255, 255, 0.7);
     background: rgba(41, 46, 66, 0.25);
     transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(220, 230, 255, 0.25);
+    box-shadow:
+        0 0 20px rgba(255, 255, 255, 0.3),
+        0 0 40px rgba(255, 255, 255, 0.15);
 }
 
 .btn-shine:hover::after {
@@ -214,7 +216,7 @@ footer {
     background: linear-gradient(
         90deg,
         transparent,
-        rgba(122, 162, 247, 0.1),
+        rgba(255, 255, 255, 0.15),
         transparent
     );
     transform: translateX(-100%) translateY(-100%) rotate(45deg);
@@ -222,17 +224,21 @@ footer {
 }
 
 .card-shine:hover {
-    color: #c0caf5;
-    border-color: #7aa2f7;
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.7);
     background: rgba(41, 46, 66, 0.25);
     transform: translateY(-8px) scale(1.02);
     box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.3),
-        0 0 0 1px rgba(122, 162, 247, 0.1);
+        0 0 20px rgba(255, 255, 255, 0.25),
+        0 0 40px rgba(255, 255, 255, 0.15);
 }
 
 .card-shine:hover h3 {
-    color: #7aa2f7;
+    color: #ffffff;
+    text-shadow:
+        0 0 10px rgba(255, 255, 255, 0.5),
+        0 0 20px rgba(255, 255, 255, 0.3);
 }
 
 .card-shine:hover::after {
@@ -262,16 +268,18 @@ footer {
         background 0.3s ease,
         transform 0.3s ease,
         box-shadow 0.3s ease;
+    transition-delay: 0s !important;
 }
 
 .card-shine.scroll-animate.animate-in:hover {
-    color: #c0caf5;
-    border-color: #7aa2f7;
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.7);
     background: rgba(41, 46, 66, 0.25);
     transform: translateY(-8px) scale(1.02);
     box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.3),
-        0 0 0 1px rgba(122, 162, 247, 0.1);
+        0 0 20px rgba(255, 255, 255, 0.25),
+        0 0 40px rgba(255, 255, 255, 0.15);
 }
 
 .card-shine.scroll-animate.animate-in:hover::after {
