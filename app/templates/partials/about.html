@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block content %}
+<section class="py-20">
+    <div class="max-w-4xl mx-auto px-6">
+        <h1 class="text-4xl font-bold mb-8 gradient-text">About Me</h1>
+        <div class="prose prose-invert max-w-none">
+            <p class="text-xl text-text-primary mb-6">
+                I am passionate about creating beautiful, efficient desktop
+                environments that combine aesthetics with productivity.
+            </p>
+            <p class="text-text-secondary mb-6">
+                My dotfiles represent years of refinement, featuring dynamic
+                color theming with pywal, custom keyboard shortcuts optimized
+                for vim-style navigation, and seamless integration between
+                tools.
+            </p>
+            <h2 class="text-2xl font-semibold mt-12 mb-4 text-text-primary">
+                Tech Stack
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                <div
+                    class="bg-dark-700 rounded-lg p-4 text-center border border-dark-600 hover:border-accent-blue transition"
+                >
+                    <p class="font-medium text-text-primary">Hyprland</p>
+                    <p class="text-sm text-text-muted">Linux WM</p>
+                </div>
+                <div
+                    class="bg-dark-700 rounded-lg p-4 text-center border border-dark-600 hover:border-accent-blue transition"
+                >
+                    <p class="font-medium text-text-primary">Yabai</p>
+                    <p class="text-sm text-text-muted">macOS WM</p>
+                </div>
+                <div
+                    class="bg-dark-700 rounded-lg p-4 text-center border border-dark-600 hover:border-accent-blue transition"
+                >
+                    <p class="font-medium text-text-primary">Pywal</p>
+                    <p class="text-sm text-text-muted">Theming</p>
+                </div>
+                <div
+                    class="bg-dark-700 rounded-lg p-4 text-center border border-dark-600 hover:border-accent-blue transition"
+                >
+                    <p class="font-medium text-text-primary">Python</p>
+                    <p class="text-sm text-text-muted">Automation</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
