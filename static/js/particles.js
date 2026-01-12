@@ -8,6 +8,42 @@
   let animationId;
   let mouse = { x: null, y: null, prevX: null, prevY: null, speed: 0 };
 
+  // Theme color definitions
+  const themeColors = {
+    nord: {
+      particles: ["#8fbcbb", "#88c0d0", "#81a1c1", "#5e81ac"],
+      mouseConnection: "136, 192, 208",
+      particleConnection: "180, 142, 173",
+    },
+    tokyo: {
+      particles: ["#7aa2f7", "#bb9af7", "#5d7cbf", "#89b4fa"],
+      mouseConnection: "122, 162, 247",
+      particleConnection: "187, 154, 247",
+    },
+    catppuccin: {
+      particles: ["#cba6f7", "#89b4fa", "#94e2d5", "#f5c2e7"],
+      mouseConnection: "203, 166, 247",
+      particleConnection: "245, 194, 231",
+    },
+    gruvbox: {
+      particles: ["#fe8019", "#fabd2f", "#b8bb26", "#83a598"],
+      mouseConnection: "254, 128, 25",
+      particleConnection: "211, 134, 155",
+    },
+    material: {
+      particles: ["#82aaff", "#c792ea", "#89ddff", "#c3e88d"],
+      mouseConnection: "130, 170, 255",
+      particleConnection: "199, 146, 234",
+    },
+  };
+
+  // Get current theme colors
+  function getThemeColors() {
+    const theme =
+      document.documentElement.getAttribute("data-theme") || "tokyo";
+    return themeColors[theme] || themeColors.tokyo;
+  }
+
   // config
   const config = {
     particleCount: 100,
@@ -18,7 +54,9 @@
     mouseConnectionRadius: 200,
     attractionStrength: 0.08,
     orbitStrength: 0.03,
-    colors: ["#7aa2f7", "#bb9af7", "#5d7cbf", "#89b4fa"],
+    get colors() {
+      return getThemeColors().particles;
+    },
   };
 
   // resize
@@ -115,8 +153,11 @@
     }
 
     draw() {
-      // glow
-      if (this.opacity > this.baseOpacity + 0.2) {
+      const isGruvbox =
+        document.documentElement.getAttribute("data-theme") === "gruvbox";
+
+      // glow (skip for gruvbox)
+      if (!isGruvbox && this.opacity > this.baseOpacity + 0.2) {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
         const gradient = ctx.createRadialGradient(
@@ -133,11 +174,25 @@
         ctx.fill();
       }
 
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       ctx.fillStyle = this.color;
       ctx.globalAlpha = this.opacity;
-      ctx.fill();
+
+      if (isGruvbox) {
+        // Draw squares for gruvbox
+        const squareSize = this.size * 2;
+        ctx.fillRect(
+          this.x - squareSize / 2,
+          this.y - squareSize / 2,
+          squareSize,
+          squareSize,
+        );
+      } else {
+        // Draw circles for other themes
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
       ctx.globalAlpha = 1;
     }
   }
@@ -156,7 +211,7 @@
         ctx.beginPath();
         ctx.moveTo(particle.x, particle.y);
         ctx.lineTo(mouse.x, mouse.y);
-        ctx.strokeStyle = `rgba(122, 162, 247, ${opacity})`;
+        ctx.strokeStyle = `rgba(${getThemeColors().mouseConnection}, ${opacity})`;
         ctx.lineWidth = 1;
         ctx.stroke();
       }
@@ -190,7 +245,7 @@
           ctx.beginPath();
           ctx.moveTo(p1.x, p1.y);
           ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `rgba(187, 154, 247, ${opacity})`;
+          ctx.strokeStyle = `rgba(${getThemeColors().particleConnection}, ${opacity})`;
           ctx.lineWidth = 0.5;
           ctx.stroke();
         }
@@ -210,8 +265,9 @@
       mouse.y,
       config.mouseRadius * 0.6,
     );
-    gradient.addColorStop(0, "rgba(122, 162, 247, 0.08)");
-    gradient.addColorStop(0.5, "rgba(187, 154, 247, 0.03)");
+    const colors = getThemeColors();
+    gradient.addColorStop(0, `rgba(${colors.mouseConnection}, 0.08)`);
+    gradient.addColorStop(0.5, `rgba(${colors.particleConnection}, 0.03)`);
     gradient.addColorStop(1, "transparent");
 
     ctx.beginPath();
@@ -312,6 +368,15 @@
     canvas.style.display = "none";
     return;
   }
+
+  // Listen for theme changes
+  window.addEventListener("themechange", () => {
+    // Update existing particle colors
+    particles.forEach((particle) => {
+      particle.color =
+        config.colors[Math.floor(Math.random() * config.colors.length)];
+    });
+  });
 
   init();
 })();
