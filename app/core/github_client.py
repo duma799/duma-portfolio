@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from typing import Any, Dict, List, Optional
 
 import httpx
@@ -58,8 +59,39 @@ class GitHubClient:
         for branch in ["main", "master"]:
             content = await self.get_raw_file(repo, "README.md", branch)
             if content:
-                return content
+                return self._fix_relative_urls(content, repo, branch)
         return None
+
+    def _fix_relative_urls(self, content: str, repo: str, branch: str) -> str:
+        """Convert relative image/link paths to absolute GitHub raw URLs."""
+        raw_base = f"{self.RAW_URL}/{repo}/{branch}"
+
+        # Fix markdown images: ![alt](relative/path) -> ![alt](absolute/url)
+        def replace_md_image(match):
+            alt = match.group(1)
+            path = match.group(2)
+            # Skip if already absolute URL
+            if path.startswith(("http://", "https://", "//")):
+                return match.group(0)
+            # Remove leading ./ if present
+            path = path.lstrip("./")
+            return f"![{alt}]({raw_base}/{path})"
+
+        content = re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", replace_md_image, content)
+
+        # Fix HTML img tags: src="relative/path" -> src="absolute/url"
+        def replace_html_img(match):
+            prefix = match.group(1)
+            path = match.group(2)
+            # Skip if already absolute URL
+            if path.startswith(("http://", "https://", "//")):
+                return match.group(0)
+            path = path.lstrip("./")
+            return f'{prefix}"{raw_base}/{path}"'
+
+        content = re.sub(r'(<img[^>]*src=)"([^"]+)"', replace_html_img, content)
+
+        return content
 
 
 github_client = GitHubClient()
