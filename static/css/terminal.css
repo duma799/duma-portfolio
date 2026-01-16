@@ -301,6 +301,68 @@ footer {
 }
 
 /* ========================================
+   SKILLS MARQUEE
+   ======================================== */
+
+.skills-marquee {
+    background: rgba(var(--glow-color), 0.08);
+    border-top: 1px solid var(--dark-600);
+    border-bottom: 1px solid var(--dark-600);
+    overflow: hidden;
+    padding: 2.5rem 0;
+}
+
+.marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee-scroll 25s linear infinite;
+}
+
+.marquee-content {
+    display: flex;
+    gap: 3rem;
+    padding: 0 1.5rem;
+}
+
+.skill {
+    font-size: 6rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+}
+
+.skill.highlighted {
+    color: var(--text-primary);
+}
+
+.skill.muted {
+    color: var(--text-muted);
+}
+
+@keyframes marquee-scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes marquee-scroll-reverse {
+    from {
+        transform: translateX(-50%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.marquee-track.reverse {
+    animation-name: marquee-scroll-reverse;
+}
+
+/* ========================================
    GRUVBOX THEME - Flat Terminal Aesthetic
    ======================================== */
 
@@ -444,4 +506,19 @@ footer {
 [data-theme="gruvbox"]
     a:not(.btn-shine):not(.card-shine):not(.gradient-text):hover {
     color: var(--accent-orange) !important;
+}
+
+/* Gruvbox marquee - stepped/teleport animation */
+[data-theme="gruvbox"] .skills-marquee {
+    background: var(--dark-800);
+    border-top: 2px solid var(--accent-orange);
+    border-bottom: 2px solid var(--accent-orange);
+}
+
+[data-theme="gruvbox"] .marquee-track {
+    animation-timing-function: steps(50, end);
+}
+
+[data-theme="gruvbox"] .skill.highlighted {
+    color: var(--accent-orange);
 }
