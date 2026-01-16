@@ -1,5 +1,20 @@
 <nav
-    class="fixed top-0 w-full bg-dark-800/80 backdrop-blur-md border-b border-dark-600 z-50"
+    x-data="{
+        lastScroll: 0,
+        hidden: false,
+        handleScroll() {
+            const currentScroll = window.scrollY;
+            if (currentScroll > 500) {
+                this.hidden = true;
+            } else if (currentScroll < 150) {
+                this.hidden = false;
+            }
+            this.lastScroll = currentScroll;
+        }
+    }"
+    @scroll.window="handleScroll()"
+    :class="hidden ? '-translate-y-full' : 'translate-y-0'"
+    class="fixed top-0 w-full bg-dark-800/80 backdrop-blur-md border-b border-dark-600 z-50 transition-transform duration-300"
 >
     <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
         <a href="/#home" class="text-xl font-bold gradient-text">Duma</a>
