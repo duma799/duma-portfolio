@@ -1,3 +1,5 @@
 .env
 .DS_Store
 __pycache__/
+app/templates/backup/
+app/templates/backup/
