@@ -179,8 +179,7 @@
 
     draw() {
       const currentTheme = document.documentElement.getAttribute("data-theme");
-      const isGruvbox =
-        currentTheme === "gruvbox" || currentTheme === "gruvbox-light";
+      const isGruvbox = currentTheme.startsWith("gruvbox");
 
       // glow (skip for gruvbox)
       if (!isGruvbox && this.opacity > this.baseOpacity + 0.2) {
