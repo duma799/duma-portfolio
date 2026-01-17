@@ -62,8 +62,14 @@
                         x-transition:leave="transition ease-in duration-75"
                         x-transition:leave-start="opacity-100 scale-100"
                         x-transition:leave-end="opacity-0 scale-95"
-                        class="absolute right-0 mt-2 w-44 rounded-lg bg-dark-800 border border-dark-600 shadow-xl overflow-hidden"
+                        class="absolute right-0 mt-2 w-44 rounded-lg bg-dark-800 border border-dark-600 shadow-xl overflow-hidden max-h-80 overflow-y-auto"
                     >
+                        <!-- Dark Themes -->
+                        <div
+                            class="px-3 py-1.5 text-xs text-text-muted uppercase tracking-wider bg-dark-700/50"
+                        >
+                            Dark
+                        </div>
                         <button
                             @click="setTheme('tokyo'); open = false"
                             class="w-full px-4 py-2.5 text-left hover:bg-dark-700 transition flex items-center gap-3"
@@ -118,6 +124,67 @@
                                 class="w-3 h-3 rounded-full bg-[#88c0d0]"
                             ></span>
                             Nord
+                        </button>
+                        <!-- Light Themes -->
+                        <div
+                            class="px-3 py-1.5 text-xs text-text-muted uppercase tracking-wider bg-dark-700/50 border-t border-dark-600"
+                        >
+                            Light
+                        </div>
+                        <button
+                            @click="setTheme('tokyo-light'); open = false"
+                            class="w-full px-4 py-2.5 text-left hover:bg-dark-700 transition flex items-center gap-3"
+                            :class="document.documentElement.getAttribute('data-theme') === 'tokyo-light' ? 'text-accent-cyan' : ''"
+                        >
+                            <span
+                                class="w-3 h-3 rounded-full bg-[#2e7de9] border border-dark-500"
+                            ></span>
+                            Tokyo Day
+                        </button>
+                        <button
+                            @click="setTheme('catppuccin-light'); open = false"
+                            class="w-full px-4 py-2.5 text-left hover:bg-dark-700 transition flex items-center gap-3"
+                            :class="document.documentElement.getAttribute('data-theme') === 'catppuccin-light' ? 'text-accent-cyan' : ''"
+                        >
+                            <span
+                                class="w-3 h-3 rounded-full bg-[#8839ef] border border-dark-500"
+                            ></span>
+                            Catppuccin Latte
+                        </button>
+                        <button
+                            @click="setTheme('gruvbox-light'); open = false"
+                            class="w-full px-4 py-2.5 text-left hover:bg-dark-700 transition flex items-center gap-3"
+                            :class="document.documentElement.getAttribute('data-theme') === 'gruvbox-light' ? 'text-accent-cyan' : ''"
+                        >
+                            <span
+                                class="w-3 h-3 rounded-full bg-[#d65d0e] border border-dark-500"
+                            ></span>
+                            Gruvbox Light
+                            <span
+                                class="text-[#d79921] text-sm ml-auto leading-none"
+                                style="font-family: system-ui, sans-serif"
+                                >★</span
+                            >
+                        </button>
+                        <button
+                            @click="setTheme('material-light'); open = false"
+                            class="w-full px-4 py-2.5 text-left hover:bg-dark-700 transition flex items-center gap-3"
+                            :class="document.documentElement.getAttribute('data-theme') === 'material-light' ? 'text-accent-cyan' : ''"
+                        >
+                            <span
+                                class="w-3 h-3 rounded-full bg-[#6182b8] border border-dark-500"
+                            ></span>
+                            Material Light
+                        </button>
+                        <button
+                            @click="setTheme('nord-light'); open = false"
+                            class="w-full px-4 py-2.5 text-left hover:bg-dark-700 transition flex items-center gap-3"
+                            :class="document.documentElement.getAttribute('data-theme') === 'nord-light' ? 'text-accent-cyan' : ''"
+                        >
+                            <span
+                                class="w-3 h-3 rounded-full bg-[#5e81ac] border border-dark-500"
+                            ></span>
+                            Nord Light
                         </button>
                     </div>
                 </div>

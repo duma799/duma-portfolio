@@ -35,6 +35,31 @@
       mouseConnection: "130, 170, 255",
       particleConnection: "199, 146, 234",
     },
+    "nord-light": {
+      particles: ["#5e81ac", "#88c0d0", "#81a1c1", "#b48ead"],
+      mouseConnection: "94, 129, 172",
+      particleConnection: "136, 192, 208",
+    },
+    "tokyo-light": {
+      particles: ["#2e7de9", "#9854f1", "#007197", "#587539"],
+      mouseConnection: "46, 125, 233",
+      particleConnection: "152, 84, 241",
+    },
+    "catppuccin-light": {
+      particles: ["#8839ef", "#1e66f5", "#179299", "#ea76cb"],
+      mouseConnection: "136, 57, 239",
+      particleConnection: "30, 102, 245",
+    },
+    "gruvbox-light": {
+      particles: ["#d65d0e", "#d79921", "#98971a", "#458588"],
+      mouseConnection: "214, 93, 14",
+      particleConnection: "177, 98, 134",
+    },
+    "material-light": {
+      particles: ["#6182b8", "#7c4dff", "#39adb5", "#91b859"],
+      mouseConnection: "97, 130, 184",
+      particleConnection: "124, 77, 255",
+    },
   };
 
   // Get current theme colors
@@ -153,8 +178,9 @@
     }
 
     draw() {
+      const currentTheme = document.documentElement.getAttribute("data-theme");
       const isGruvbox =
-        document.documentElement.getAttribute("data-theme") === "gruvbox";
+        currentTheme === "gruvbox" || currentTheme === "gruvbox-light";
 
       // glow (skip for gruvbox)
       if (!isGruvbox && this.opacity > this.baseOpacity + 0.2) {
