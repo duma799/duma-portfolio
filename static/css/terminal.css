@@ -462,8 +462,10 @@ footer {
 
 /* Gruvbox nav */
 [data-theme="gruvbox"] nav {
-    background: var(--dark-900) !important;
     backdrop-filter: none;
+}
+[data-theme="gruvbox"] nav > div:first-child {
+    background: var(--dark-900) !important;
     border-bottom: 2px solid var(--accent-orange);
 }
 
@@ -693,8 +695,11 @@ footer {
 
 /* Gruvbox light nav */
 [data-theme="gruvbox-light"] nav {
-    background: var(--dark-900) !important;
     backdrop-filter: none;
+}
+
+[data-theme="gruvbox-light"] nav > div:first-child {
+    background: var(--dark-900) !important;
     border-bottom: 2px solid var(--accent-orange);
 }
 
