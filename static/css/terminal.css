@@ -758,3 +758,108 @@ footer {
 [data-theme="gruvbox-light"] .skill.highlighted {
     color: var(--accent-orange);
 }
+
+.readme-content {
+    line-height: 1.7;
+}
+.readme-content h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--dark-600);
+    color: var(--text-primary);
+}
+.readme-content h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+}
+.readme-content h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+.readme-content p {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+}
+.readme-content ul,
+.readme-content ol {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    color: var(--text-secondary);
+}
+.readme-content li {
+    margin-bottom: 0.25rem;
+}
+.readme-content code {
+    background: var(--dark-700);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: var(--accent-blue);
+}
+.readme-content pre {
+    background: var(--dark-800);
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    position: relative;
+    border: 1px solid var(--dark-600);
+}
+.readme-content pre code {
+    background: none;
+    padding: 0;
+    color: var(--text-secondary);
+}
+.copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    background: var(--dark-600);
+    border: 1px solid var(--dark-500);
+    border-radius: 4px;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    cursor: pointer;
+    opacity: 0;
+    transition:
+        opacity 0.2s,
+        background 0.2s,
+        color 0.2s;
+}
+.readme-content pre:hover .copy-btn {
+    opacity: 1;
+}
+.copy-btn:hover {
+    background: var(--dark-500);
+    color: var(--text-primary);
+}
+.copy-btn.copied {
+    color: var(--accent-green);
+}
+.readme-content a {
+    color: var(--accent-blue);
+    text-decoration: underline;
+}
+.readme-content a:hover {
+    color: var(--accent-cyan);
+}
+.readme-content img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+.readme-content blockquote {
+    border-left: 4px solid var(--accent-blue);
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: var(--text-muted);
+}
