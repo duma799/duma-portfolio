@@ -863,3 +863,142 @@ footer {
     margin: 1rem 0;
     color: var(--text-muted);
 }
+
+/* ========================================
+   GALLERY & LIGHTBOX
+   ======================================== */
+
+.gallery-item {
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-4px);
+}
+
+/* Gallery scroll animation override */
+.gallery-item.scroll-animate {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+    transition:
+        opacity 0.5s ease,
+        transform 0.6s ease;
+}
+
+.gallery-item.scroll-animate.animate-in {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.gallery-item.scroll-animate.animate-in:hover {
+    transform: translateY(-4px) scale(1);
+}
+
+/* Lightbox overlay */
+.lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+}
+
+.lightbox-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    padding: 0.75rem;
+    background: var(--dark-800);
+    border: 1px solid var(--dark-600);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 101;
+}
+
+.lightbox-close:hover {
+    background: var(--dark-700);
+    color: var(--text-primary);
+    border-color: var(--accent-blue);
+}
+
+.lightbox-content {
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.lightbox-overlay.active .lightbox-content {
+    transform: scale(1);
+}
+
+.lightbox-image {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-info {
+    margin-top: 1.5rem;
+    text-align: center;
+    max-width: 600px;
+}
+
+/* Gruvbox gallery overrides */
+[data-theme="gruvbox"] .gallery-item:hover,
+[data-theme="gruvbox-light"] .gallery-item:hover {
+    transform: none;
+}
+
+[data-theme="gruvbox"] .gallery-item > div,
+[data-theme="gruvbox-light"] .gallery-item > div {
+    border: 2px solid var(--dark-600);
+}
+
+[data-theme="gruvbox"] .gallery-item:hover > div,
+[data-theme="gruvbox-light"] .gallery-item:hover > div {
+    border-color: var(--accent-orange);
+}
+
+[data-theme="gruvbox"] .lightbox-overlay,
+[data-theme="gruvbox-light"] .lightbox-overlay {
+    backdrop-filter: none;
+}
+
+[data-theme="gruvbox"] .lightbox-close,
+[data-theme="gruvbox-light"] .lightbox-close {
+    border: 2px solid var(--dark-600);
+}
+
+[data-theme="gruvbox"] .lightbox-close:hover,
+[data-theme="gruvbox-light"] .lightbox-close:hover {
+    background: var(--accent-orange);
+    color: var(--dark-900);
+    border-color: var(--accent-orange);
+}
+
+[data-theme="gruvbox"] .lightbox-image,
+[data-theme="gruvbox-light"] .lightbox-image {
+    border-radius: 0;
+}

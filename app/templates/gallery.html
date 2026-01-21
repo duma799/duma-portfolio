@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="py-20">
+    <div class="max-w-6xl mx-auto px-6">
+        <h1 class="text-4xl font-bold mb-4 gradient-text">Gallery</h1>
+        <p class="text-text-secondary mb-8">
+            Screenshots of my desktop setups across different platforms and themes.
+        </p>
+
+        <!-- Filter Tabs -->
+        <div x-data="{ activeFilter: 'all' }" class="mb-8">
+            <div class="flex flex-wrap gap-2 mb-8">
+                <button
+                    @click="activeFilter = 'all'"
+                    :class="activeFilter === 'all' ? 'bg-accent-blue text-dark-900' : 'bg-dark-700 text-text-secondary hover:bg-dark-600'"
+                    class="px-4 py-2 rounded-lg transition-all duration-200 text-sm font-medium"
+                >
+                    All
+                </button>
+                <button
+                    @click="activeFilter = 'hyprland'"
+                    :class="activeFilter === 'hyprland' ? 'bg-accent-blue text-dark-900' : 'bg-dark-700 text-text-secondary hover:bg-dark-600'"
+                    class="px-4 py-2 rounded-lg transition-all duration-200 text-sm font-medium"
+                >
+                    Hyprland
+                </button>
+                <button
+                    @click="activeFilter = 'yabai'"
+                    :class="activeFilter === 'yabai' ? 'bg-accent-blue text-dark-900' : 'bg-dark-700 text-text-secondary hover:bg-dark-600'"
+                    class="px-4 py-2 rounded-lg transition-all duration-200 text-sm font-medium"
+                >
+                    Yabai
+                </button>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="gallery-grid">
+                {% for image in images %}
+                <div
+                    x-show="activeFilter === 'all' || activeFilter === '{{ image.platform }}'"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 scale-95"
+                    x-transition:enter-end="opacity-100 scale-100"
+                    class="gallery-item group cursor-pointer"
+                    onclick="openLightbox('{{ image.url }}', '{{ image.title }}', '{{ image.description }}')"
+                >
+                    <div class="relative overflow-hidden rounded-xl border border-dark-600 bg-dark-800 hover:border-accent-blue transition-all duration-300">
+                        <img
+                            src="{{ image.url }}"
+                            alt="{{ image.title }}"
+                            class="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="absolute bottom-0 left-0 right-0 p-4">
+                                <h3 class="text-text-primary font-semibold mb-1">{{ image.title }}</h3>
+                                <p class="text-text-muted text-sm">{{ image.description }}</p>
+                                <span class="inline-block mt-2 px-2 py-1 bg-dark-700/80 rounded text-xs text-accent-cyan">
+                                    {{ image.platform | capitalize }}
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Expand icon -->
+                        <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div class="p-2 bg-dark-900/80 rounded-lg backdrop-blur-sm">
+                                <svg class="w-5 h-5 text-text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="col-span-full text-center py-12">
+                    <div class="text-text-muted mb-4">
+                        <svg class="w-16 h-16 mx-auto opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <p class="text-text-muted text-lg">No screenshots yet</p>
+                    <p class="text-text-muted text-sm mt-2">Add images to <code class="mono text-accent-cyan">static/images/gallery/</code></p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Lightbox Modal -->
+<div
+    id="lightbox"
+    class="lightbox-overlay"
+    onclick="closeLightbox(event)"
+>
+    <button class="lightbox-close" onclick="closeLightbox(event)">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    </button>
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+        <img id="lightbox-image" src="" alt="" class="lightbox-image"/>
+        <div class="lightbox-info">
+            <h3 id="lightbox-title" class="text-xl font-semibold text-text-primary"></h3>
+            <p id="lightbox-description" class="text-text-muted mt-1"></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function openLightbox(url, title, description) {
+        const lightbox = document.getElementById('lightbox');
+        const image = document.getElementById('lightbox-image');
+        const titleEl = document.getElementById('lightbox-title');
+        const descEl = document.getElementById('lightbox-description');
+
+        image.src = url;
+        image.alt = title;
+        titleEl.textContent = title;
+        descEl.textContent = description;
+
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox(event) {
+        if (event) event.stopPropagation();
+        const lightbox = document.getElementById('lightbox');
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // Close on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeLightbox();
+        }
+    });
+</script>
+{% endblock %}
