@@ -75,8 +75,8 @@
     particleMinSize: 1,
     particleMaxSize: 4,
     baseSpeed: 0.15,
-    mouseRadius: 250,
-    mouseConnectionRadius: 200,
+    mouseRadius: 150,
+    mouseConnectionRadius: 120,
     attractionStrength: 0.08,
     orbitStrength: 0.03,
     get colors() {
