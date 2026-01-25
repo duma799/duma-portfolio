@@ -47,242 +47,276 @@
             };
         </script>
         <script>
-            // Theme definitions
-            const themes = {
-                nord: {
-                    "--dark-950": "#242933",
-                    "--dark-900": "#2e3440",
-                    "--dark-800": "#3b4252",
-                    "--dark-700": "#434c5e",
-                    "--dark-600": "#4c566a",
-                    "--dark-500": "#5a657a",
-                    "--accent-blue": "#5e81ac",
-                    "--accent-purple": "#b48ead",
-                    "--accent-cyan": "#88c0d0",
-                    "--accent-green": "#a3be8c",
-                    "--accent-orange": "#d08770",
-                    "--accent-red": "#bf616a",
-                    "--accent-yellow": "#ebcb8b",
-                    "--text-primary": "#eceff4",
-                    "--text-secondary": "#e5e9f0",
-                    "--text-muted": "#d8dee9",
-                    "--text-dark": "#4c566a",
-                    "--glow-color": "136, 192, 208",
-                    "--particle-colors": "#8fbcbb,#88c0d0,#81a1c1,#5e81ac",
-                    "--gradient-colors":
-                        "#8fbcbb, #88c0d0, #81a1c1, #5e81ac, #b48ead, #88c0d0, #8fbcbb",
-                },
+            // Theme definitions - separated into palettes with dark/light variants
+            const themePalettes = {
                 tokyo: {
-                    "--dark-950": "#0a0a0f",
-                    "--dark-900": "#1a1b26",
-                    "--dark-800": "#16161e",
-                    "--dark-700": "#1f2335",
-                    "--dark-600": "#292e42",
-                    "--dark-500": "#3b4261",
-                    "--accent-blue": "#7aa2f7",
-                    "--accent-purple": "#bb9af7",
-                    "--accent-cyan": "#7dcfff",
-                    "--accent-green": "#9ece6a",
-                    "--accent-orange": "#ff9e64",
-                    "--accent-red": "#f7768e",
-                    "--accent-yellow": "#e0af68",
-                    "--text-primary": "#c0caf5",
-                    "--text-secondary": "#a9b1d6",
-                    "--text-muted": "#565f89",
-                    "--text-dark": "#414868",
-                    "--glow-color": "122, 162, 247",
-                    "--particle-colors": "#7aa2f7,#bb9af7,#5d7cbf,#89b4fa",
-                    "--gradient-colors":
-                        "#7aa2f7, #bb9af7, #7dcfff, #bb9af7, #7aa2f7",
+                    name: "Tokyo",
+                    color: "#7aa2f7",
+                    dark: {
+                        "--dark-950": "#0a0a0f",
+                        "--dark-900": "#1a1b26",
+                        "--dark-800": "#16161e",
+                        "--dark-700": "#1f2335",
+                        "--dark-600": "#292e42",
+                        "--dark-500": "#3b4261",
+                        "--accent-blue": "#7aa2f7",
+                        "--accent-purple": "#bb9af7",
+                        "--accent-cyan": "#7dcfff",
+                        "--accent-green": "#9ece6a",
+                        "--accent-orange": "#ff9e64",
+                        "--accent-red": "#f7768e",
+                        "--accent-yellow": "#e0af68",
+                        "--text-primary": "#c0caf5",
+                        "--text-secondary": "#a9b1d6",
+                        "--text-muted": "#565f89",
+                        "--text-dark": "#414868",
+                        "--glow-color": "122, 162, 247",
+                        "--particle-colors": "#7aa2f7,#bb9af7,#5d7cbf,#89b4fa",
+                        "--gradient-colors":
+                            "#7aa2f7, #bb9af7, #7dcfff, #bb9af7, #7aa2f7",
+                    },
+                    light: {
+                        "--dark-950": "#ffffff",
+                        "--dark-900": "#d5d6db",
+                        "--dark-800": "#e9e9ed",
+                        "--dark-700": "#c4c8da",
+                        "--dark-600": "#b4b8d0",
+                        "--dark-500": "#9699a3",
+                        "--accent-blue": "#2e7de9",
+                        "--accent-purple": "#9854f1",
+                        "--accent-cyan": "#007197",
+                        "--accent-green": "#587539",
+                        "--accent-orange": "#b15c00",
+                        "--accent-red": "#f52a65",
+                        "--accent-yellow": "#8c6c3e",
+                        "--text-primary": "#343b58",
+                        "--text-secondary": "#4c5178",
+                        "--text-muted": "#6c7086",
+                        "--text-dark": "#d5d6db",
+                        "--glow-color": "46, 125, 233",
+                        "--particle-colors": "#2e7de9,#9854f1,#007197,#587539",
+                        "--gradient-colors":
+                            "#2e7de9, #9854f1, #007197, #9854f1, #2e7de9",
+                    },
                 },
                 catppuccin: {
-                    "--dark-950": "#11111b",
-                    "--dark-900": "#1e1e2e",
-                    "--dark-800": "#181825",
-                    "--dark-700": "#313244",
-                    "--dark-600": "#45475a",
-                    "--dark-500": "#585b70",
-                    "--accent-blue": "#89b4fa",
-                    "--accent-purple": "#cba6f7",
-                    "--accent-cyan": "#94e2d5",
-                    "--accent-green": "#a6e3a1",
-                    "--accent-orange": "#fab387",
-                    "--accent-red": "#f38ba8",
-                    "--accent-yellow": "#f9e2af",
-                    "--text-primary": "#cdd6f4",
-                    "--text-secondary": "#bac2de",
-                    "--text-muted": "#6c7086",
-                    "--text-dark": "#45475a",
-                    "--glow-color": "203, 166, 247",
-                    "--particle-colors": "#cba6f7,#89b4fa,#94e2d5,#f5c2e7",
-                    "--gradient-colors":
-                        "#cba6f7, #89b4fa, #94e2d5, #89b4fa, #cba6f7",
+                    name: "Catppuccin",
+                    color: "#cba6f7",
+                    dark: {
+                        "--dark-950": "#11111b",
+                        "--dark-900": "#1e1e2e",
+                        "--dark-800": "#181825",
+                        "--dark-700": "#313244",
+                        "--dark-600": "#45475a",
+                        "--dark-500": "#585b70",
+                        "--accent-blue": "#89b4fa",
+                        "--accent-purple": "#cba6f7",
+                        "--accent-cyan": "#94e2d5",
+                        "--accent-green": "#a6e3a1",
+                        "--accent-orange": "#fab387",
+                        "--accent-red": "#f38ba8",
+                        "--accent-yellow": "#f9e2af",
+                        "--text-primary": "#cdd6f4",
+                        "--text-secondary": "#bac2de",
+                        "--text-muted": "#6c7086",
+                        "--text-dark": "#45475a",
+                        "--glow-color": "203, 166, 247",
+                        "--particle-colors": "#cba6f7,#89b4fa,#94e2d5,#f5c2e7",
+                        "--gradient-colors":
+                            "#cba6f7, #89b4fa, #94e2d5, #89b4fa, #cba6f7",
+                    },
+                    light: {
+                        "--dark-950": "#ffffff",
+                        "--dark-900": "#eff1f5",
+                        "--dark-800": "#e6e9ef",
+                        "--dark-700": "#dce0e8",
+                        "--dark-600": "#ccd0da",
+                        "--dark-500": "#bcc0cc",
+                        "--accent-blue": "#1e66f5",
+                        "--accent-purple": "#8839ef",
+                        "--accent-cyan": "#179299",
+                        "--accent-green": "#40a02b",
+                        "--accent-orange": "#fe640b",
+                        "--accent-red": "#d20f39",
+                        "--accent-yellow": "#df8e1d",
+                        "--text-primary": "#4c4f69",
+                        "--text-secondary": "#5c5f77",
+                        "--text-muted": "#6c6f85",
+                        "--text-dark": "#eff1f5",
+                        "--glow-color": "136, 57, 239",
+                        "--particle-colors": "#8839ef,#1e66f5,#179299,#ea76cb",
+                        "--gradient-colors":
+                            "#8839ef, #1e66f5, #179299, #1e66f5, #8839ef",
+                    },
                 },
                 gruvbox: {
-                    "--dark-950": "#1d2021",
-                    "--dark-900": "#282828",
-                    "--dark-800": "#32302f",
-                    "--dark-700": "#3c3836",
-                    "--dark-600": "#504945",
-                    "--dark-500": "#665c54",
-                    "--accent-blue": "#83a598",
-                    "--accent-purple": "#d3869b",
-                    "--accent-cyan": "#8ec07c",
-                    "--accent-green": "#b8bb26",
-                    "--accent-orange": "#fe8019",
-                    "--accent-red": "#fb4934",
-                    "--accent-yellow": "#fabd2f",
-                    "--text-primary": "#ebdbb2",
-                    "--text-secondary": "#d5c4a1",
-                    "--text-muted": "#a89984",
-                    "--text-dark": "#504945",
-                    "--glow-color": "254, 128, 25",
-                    "--particle-colors": "#fe8019,#fabd2f,#b8bb26,#83a598",
-                    "--gradient-colors":
-                        "#fe8019, #fabd2f, #b8bb26, #83a598, #fe8019",
+                    name: "Gruvbox",
+                    color: "#fe8019",
+                    special: true,
+                    dark: {
+                        "--dark-950": "#1d2021",
+                        "--dark-900": "#282828",
+                        "--dark-800": "#32302f",
+                        "--dark-700": "#3c3836",
+                        "--dark-600": "#504945",
+                        "--dark-500": "#665c54",
+                        "--accent-blue": "#83a598",
+                        "--accent-purple": "#d3869b",
+                        "--accent-cyan": "#8ec07c",
+                        "--accent-green": "#b8bb26",
+                        "--accent-orange": "#fe8019",
+                        "--accent-red": "#fb4934",
+                        "--accent-yellow": "#fabd2f",
+                        "--text-primary": "#ebdbb2",
+                        "--text-secondary": "#d5c4a1",
+                        "--text-muted": "#a89984",
+                        "--text-dark": "#504945",
+                        "--glow-color": "254, 128, 25",
+                        "--particle-colors": "#fe8019,#fabd2f,#b8bb26,#83a598",
+                        "--gradient-colors":
+                            "#fe8019, #fabd2f, #b8bb26, #83a598, #fe8019",
+                    },
+                    light: {
+                        "--dark-950": "#fbf1c7",
+                        "--dark-900": "#f9f5d7",
+                        "--dark-800": "#f2e5bc",
+                        "--dark-700": "#ebdbb2",
+                        "--dark-600": "#d5c4a1",
+                        "--dark-500": "#bdae93",
+                        "--accent-blue": "#458588",
+                        "--accent-purple": "#b16286",
+                        "--accent-cyan": "#689d6a",
+                        "--accent-green": "#98971a",
+                        "--accent-orange": "#d65d0e",
+                        "--accent-red": "#cc241d",
+                        "--accent-yellow": "#d79921",
+                        "--text-primary": "#3c3836",
+                        "--text-secondary": "#504945",
+                        "--text-muted": "#665c54",
+                        "--text-dark": "#f9f5d7",
+                        "--glow-color": "214, 93, 14",
+                        "--particle-colors": "#d65d0e,#d79921,#98971a,#458588",
+                        "--gradient-colors":
+                            "#d65d0e, #d79921, #98971a, #458588, #d65d0e",
+                    },
                 },
                 material: {
-                    "--dark-950": "#0f111a",
-                    "--dark-900": "#1a1c25",
-                    "--dark-800": "#232530",
-                    "--dark-700": "#2c2e3a",
-                    "--dark-600": "#3b3d4a",
-                    "--dark-500": "#4a4c59",
-                    "--accent-blue": "#82aaff",
-                    "--accent-purple": "#c792ea",
-                    "--accent-cyan": "#89ddff",
-                    "--accent-green": "#c3e88d",
-                    "--accent-orange": "#f78c6c",
-                    "--accent-red": "#ff5370",
-                    "--accent-yellow": "#ffcb6b",
-                    "--text-primary": "#eeffff",
-                    "--text-secondary": "#b2ccd6",
-                    "--text-muted": "#676e95",
-                    "--text-dark": "#3b3d4a",
-                    "--glow-color": "130, 170, 255",
-                    "--particle-colors": "#82aaff,#c792ea,#89ddff,#c3e88d",
-                    "--gradient-colors":
-                        "#82aaff, #c792ea, #89ddff, #c792ea, #82aaff",
+                    name: "Material",
+                    color: "#82aaff",
+                    dark: {
+                        "--dark-950": "#0f111a",
+                        "--dark-900": "#1a1c25",
+                        "--dark-800": "#232530",
+                        "--dark-700": "#2c2e3a",
+                        "--dark-600": "#3b3d4a",
+                        "--dark-500": "#4a4c59",
+                        "--accent-blue": "#82aaff",
+                        "--accent-purple": "#c792ea",
+                        "--accent-cyan": "#89ddff",
+                        "--accent-green": "#c3e88d",
+                        "--accent-orange": "#f78c6c",
+                        "--accent-red": "#ff5370",
+                        "--accent-yellow": "#ffcb6b",
+                        "--text-primary": "#eeffff",
+                        "--text-secondary": "#b2ccd6",
+                        "--text-muted": "#676e95",
+                        "--text-dark": "#3b3d4a",
+                        "--glow-color": "130, 170, 255",
+                        "--particle-colors": "#82aaff,#c792ea,#89ddff,#c3e88d",
+                        "--gradient-colors":
+                            "#82aaff, #c792ea, #89ddff, #c792ea, #82aaff",
+                    },
+                    light: {
+                        "--dark-950": "#ffffff",
+                        "--dark-900": "#fafafa",
+                        "--dark-800": "#f5f5f5",
+                        "--dark-700": "#eeeeee",
+                        "--dark-600": "#e0e0e0",
+                        "--dark-500": "#bdbdbd",
+                        "--accent-blue": "#6182b8",
+                        "--accent-purple": "#7c4dff",
+                        "--accent-cyan": "#39adb5",
+                        "--accent-green": "#91b859",
+                        "--accent-orange": "#f76d47",
+                        "--accent-red": "#e53935",
+                        "--accent-yellow": "#ffb62c",
+                        "--text-primary": "#37474f",
+                        "--text-secondary": "#546e7a",
+                        "--text-muted": "#78909c",
+                        "--text-dark": "#fafafa",
+                        "--glow-color": "97, 130, 184",
+                        "--particle-colors": "#6182b8,#7c4dff,#39adb5,#91b859",
+                        "--gradient-colors":
+                            "#6182b8, #7c4dff, #39adb5, #7c4dff, #6182b8",
+                    },
                 },
-                "nord-light": {
-                    "--dark-950": "#ffffff",
-                    "--dark-900": "#eceff4",
-                    "--dark-800": "#e5e9f0",
-                    "--dark-700": "#d8dee9",
-                    "--dark-600": "#c9d1e0",
-                    "--dark-500": "#b8c5d9",
-                    "--accent-blue": "#5e81ac",
-                    "--accent-purple": "#b48ead",
-                    "--accent-cyan": "#88c0d0",
-                    "--accent-green": "#a3be8c",
-                    "--accent-orange": "#d08770",
-                    "--accent-red": "#bf616a",
-                    "--accent-yellow": "#ebcb8b",
-                    "--text-primary": "#2e3440",
-                    "--text-secondary": "#3b4252",
-                    "--text-muted": "#4c566a",
-                    "--text-dark": "#eceff4",
-                    "--glow-color": "94, 129, 172",
-                    "--particle-colors": "#5e81ac,#88c0d0,#81a1c1,#b48ead",
-                    "--gradient-colors":
-                        "#5e81ac, #88c0d0, #81a1c1, #b48ead, #5e81ac",
-                },
-                "tokyo-light": {
-                    "--dark-950": "#ffffff",
-                    "--dark-900": "#d5d6db",
-                    "--dark-800": "#e9e9ed",
-                    "--dark-700": "#c4c8da",
-                    "--dark-600": "#b4b8d0",
-                    "--dark-500": "#9699a3",
-                    "--accent-blue": "#2e7de9",
-                    "--accent-purple": "#9854f1",
-                    "--accent-cyan": "#007197",
-                    "--accent-green": "#587539",
-                    "--accent-orange": "#b15c00",
-                    "--accent-red": "#f52a65",
-                    "--accent-yellow": "#8c6c3e",
-                    "--text-primary": "#343b58",
-                    "--text-secondary": "#4c5178",
-                    "--text-muted": "#6c7086",
-                    "--text-dark": "#d5d6db",
-                    "--glow-color": "46, 125, 233",
-                    "--particle-colors": "#2e7de9,#9854f1,#007197,#587539",
-                    "--gradient-colors":
-                        "#2e7de9, #9854f1, #007197, #9854f1, #2e7de9",
-                },
-                "catppuccin-light": {
-                    "--dark-950": "#ffffff",
-                    "--dark-900": "#eff1f5",
-                    "--dark-800": "#e6e9ef",
-                    "--dark-700": "#dce0e8",
-                    "--dark-600": "#ccd0da",
-                    "--dark-500": "#bcc0cc",
-                    "--accent-blue": "#1e66f5",
-                    "--accent-purple": "#8839ef",
-                    "--accent-cyan": "#179299",
-                    "--accent-green": "#40a02b",
-                    "--accent-orange": "#fe640b",
-                    "--accent-red": "#d20f39",
-                    "--accent-yellow": "#df8e1d",
-                    "--text-primary": "#4c4f69",
-                    "--text-secondary": "#5c5f77",
-                    "--text-muted": "#6c6f85",
-                    "--text-dark": "#eff1f5",
-                    "--glow-color": "136, 57, 239",
-                    "--particle-colors": "#8839ef,#1e66f5,#179299,#ea76cb",
-                    "--gradient-colors":
-                        "#8839ef, #1e66f5, #179299, #1e66f5, #8839ef",
-                },
-                "gruvbox-light": {
-                    "--dark-950": "#fbf1c7",
-                    "--dark-900": "#f9f5d7",
-                    "--dark-800": "#f2e5bc",
-                    "--dark-700": "#ebdbb2",
-                    "--dark-600": "#d5c4a1",
-                    "--dark-500": "#bdae93",
-                    "--accent-blue": "#458588",
-                    "--accent-purple": "#b16286",
-                    "--accent-cyan": "#689d6a",
-                    "--accent-green": "#98971a",
-                    "--accent-orange": "#d65d0e",
-                    "--accent-red": "#cc241d",
-                    "--accent-yellow": "#d79921",
-                    "--text-primary": "#3c3836",
-                    "--text-secondary": "#504945",
-                    "--text-muted": "#665c54",
-                    "--text-dark": "#f9f5d7",
-                    "--glow-color": "214, 93, 14",
-                    "--particle-colors": "#d65d0e,#d79921,#98971a,#458588",
-                    "--gradient-colors":
-                        "#d65d0e, #d79921, #98971a, #458588, #d65d0e",
-                },
-                "material-light": {
-                    "--dark-950": "#ffffff",
-                    "--dark-900": "#fafafa",
-                    "--dark-800": "#f5f5f5",
-                    "--dark-700": "#eeeeee",
-                    "--dark-600": "#e0e0e0",
-                    "--dark-500": "#bdbdbd",
-                    "--accent-blue": "#6182b8",
-                    "--accent-purple": "#7c4dff",
-                    "--accent-cyan": "#39adb5",
-                    "--accent-green": "#91b859",
-                    "--accent-orange": "#f76d47",
-                    "--accent-red": "#e53935",
-                    "--accent-yellow": "#ffb62c",
-                    "--text-primary": "#37474f",
-                    "--text-secondary": "#546e7a",
-                    "--text-muted": "#78909c",
-                    "--text-dark": "#fafafa",
-                    "--glow-color": "97, 130, 184",
-                    "--particle-colors": "#6182b8,#7c4dff,#39adb5,#91b859",
-                    "--gradient-colors":
-                        "#6182b8, #7c4dff, #39adb5, #7c4dff, #6182b8",
+                nord: {
+                    name: "Nord",
+                    color: "#88c0d0",
+                    dark: {
+                        "--dark-950": "#242933",
+                        "--dark-900": "#2e3440",
+                        "--dark-800": "#3b4252",
+                        "--dark-700": "#434c5e",
+                        "--dark-600": "#4c566a",
+                        "--dark-500": "#5a657a",
+                        "--accent-blue": "#5e81ac",
+                        "--accent-purple": "#b48ead",
+                        "--accent-cyan": "#88c0d0",
+                        "--accent-green": "#a3be8c",
+                        "--accent-orange": "#d08770",
+                        "--accent-red": "#bf616a",
+                        "--accent-yellow": "#ebcb8b",
+                        "--text-primary": "#eceff4",
+                        "--text-secondary": "#e5e9f0",
+                        "--text-muted": "#d8dee9",
+                        "--text-dark": "#4c566a",
+                        "--glow-color": "136, 192, 208",
+                        "--particle-colors": "#8fbcbb,#88c0d0,#81a1c1,#5e81ac",
+                        "--gradient-colors":
+                            "#8fbcbb, #88c0d0, #81a1c1, #5e81ac, #b48ead, #88c0d0, #8fbcbb",
+                    },
+                    light: {
+                        "--dark-950": "#ffffff",
+                        "--dark-900": "#eceff4",
+                        "--dark-800": "#e5e9f0",
+                        "--dark-700": "#d8dee9",
+                        "--dark-600": "#c9d1e0",
+                        "--dark-500": "#b8c5d9",
+                        "--accent-blue": "#5e81ac",
+                        "--accent-purple": "#b48ead",
+                        "--accent-cyan": "#88c0d0",
+                        "--accent-green": "#a3be8c",
+                        "--accent-orange": "#d08770",
+                        "--accent-red": "#bf616a",
+                        "--accent-yellow": "#ebcb8b",
+                        "--text-primary": "#2e3440",
+                        "--text-secondary": "#3b4252",
+                        "--text-muted": "#4c566a",
+                        "--text-dark": "#eceff4",
+                        "--glow-color": "94, 129, 172",
+                        "--particle-colors": "#5e81ac,#88c0d0,#81a1c1,#b48ead",
+                        "--gradient-colors":
+                            "#5e81ac, #88c0d0, #81a1c1, #b48ead, #5e81ac",
+                    },
                 },
             };
 
-            function setTheme(themeName) {
-                const theme = themes[themeName];
+            // Current state - stored on window for Alpine.js reactivity
+            window.themeState = {
+                palette: localStorage.getItem("themePalette") || "tokyo",
+                mode: localStorage.getItem("themeMode") || "dark",
+            };
+
+            function getThemeName(palette, mode) {
+                return mode === "dark" ? palette : `${palette}-light`;
+            }
+
+            function applyTheme(palette, mode) {
+                const paletteData = themePalettes[palette];
+                if (!paletteData) return;
+
+                const theme = paletteData[mode];
                 if (!theme) return;
 
                 const root = document.documentElement;
@@ -290,21 +324,52 @@
                     root.style.setProperty(prop, value);
                 });
 
-                localStorage.setItem("theme", themeName);
+                const themeName = getThemeName(palette, mode);
                 document.documentElement.setAttribute("data-theme", themeName);
 
-                // Dispatch event for particles.js to update
+                // Save state
+                localStorage.setItem("themePalette", palette);
+                localStorage.setItem("themeMode", mode);
+
+                window.themeState.palette = palette;
+                window.themeState.mode = mode;
+
+                // Dispatch event for particles.js and Alpine to update
                 window.dispatchEvent(
                     new CustomEvent("themechange", {
-                        detail: { theme: themeName },
+                        detail: { theme: themeName, palette, mode },
                     }),
                 );
             }
 
-            // Load saved theme or default to tokyo
+            function setPalette(palette) {
+                applyTheme(palette, window.themeState.mode);
+            }
+
+            function setMode(mode) {
+                applyTheme(window.themeState.palette, mode);
+            }
+
+            function toggleMode() {
+                const newMode =
+                    window.themeState.mode === "dark" ? "light" : "dark";
+                applyTheme(window.themeState.palette, newMode);
+            }
+
+            // Legacy support for setTheme function
+            function setTheme(themeName) {
+                // Parse theme name to extract palette and mode
+                const isLight = themeName.endsWith("-light");
+                const palette = isLight
+                    ? themeName.replace("-light", "")
+                    : themeName;
+                const mode = isLight ? "light" : "dark";
+                applyTheme(palette, mode);
+            }
+
+            // Load saved theme on init
             (function () {
-                const saved = localStorage.getItem("theme") || "tokyo";
-                setTheme(saved);
+                applyTheme(window.themeState.palette, window.themeState.mode);
             })();
         </script>
         <style>
