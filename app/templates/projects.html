@@ -155,8 +155,8 @@
                 const description =
                     escapeHtml(repo.description) || "No description";
                 const language = escapeHtml(repo.language);
-                const url = encodeURI(repo.html_url);
-                const stars = parseInt(repo.stargazers_count, 10) || 0;
+                const url = encodeURI(repo.url);
+                const stars = parseInt(repo.stars, 10) || 0;
 
                 html += `
                 <div class="bg-dark-700 rounded-xl p-6 border border-dark-600 hover:border-accent-blue hover:bg-dark-600 transition-all duration-300 group">
