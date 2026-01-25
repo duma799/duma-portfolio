@@ -2,10 +2,18 @@
     x-data="{
         lastScroll: 0,
         scrolled: false,
+        currentMode: window.themeState?.mode || 'dark',
+        currentPalette: window.themeState?.palette || 'tokyo',
         handleScroll() {
             const currentScroll = window.scrollY;
             this.scrolled = currentScroll > 100;
             this.lastScroll = currentScroll;
+        },
+        init() {
+            window.addEventListener('themechange', (e) => {
+                this.currentMode = e.detail.mode;
+                this.currentPalette = e.detail.palette;
+            });
         }
     }"
     @scroll.window="handleScroll()"
@@ -34,13 +42,17 @@
                     >Gallery</a
                 >
 
-                <!-- Theme Switcher -->
-                <div x-data="{ open: false, submenu: null }" class="relative">
+                <!-- Theme Controls -->
+                <div class="flex items-center gap-2">
+                    <!-- Dark/Light Mode Toggle -->
                     <button
-                        @click="open = !open; submenu = null"
-                        class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-accent-blue transition"
+                        @click="toggleMode()"
+                        class="flex items-center justify-center w-9 h-9 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-accent-blue transition"
+                        :title="currentMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
                     >
+                        <!-- Sun icon (shown in dark mode - click to go light) -->
                         <svg
+                            x-show="currentMode === 'dark'"
                             class="w-4 h-4"
                             fill="none"
                             stroke="currentColor"
@@ -50,123 +62,88 @@
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                                 stroke-width="2"
-                                d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
                             />
                         </svg>
-                        <span class="hidden sm:inline">Theme</span>
+                        <!-- Moon icon (shown in light mode - click to go dark) -->
+                        <svg
+                            x-show="currentMode === 'light'"
+                            class="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                            />
+                        </svg>
                     </button>
 
-                    <div
-                        x-show="open"
-                        @click.away="open = false; submenu = null"
-                        x-transition:enter="transition ease-out duration-100"
-                        x-transition:enter-start="opacity-0 scale-95"
-                        x-transition:enter-end="opacity-100 scale-100"
-                        x-transition:leave="transition ease-in duration-75"
-                        x-transition:leave-start="opacity-100 scale-100"
-                        x-transition:leave-end="opacity-0 scale-95"
-                        class="absolute right-0 mt-2 w-44 rounded-lg bg-dark-800 border border-dark-600 shadow-xl overflow-visible"
-                    >
-                        <!-- Tokyo -->
-                        <div class="relative">
+                    <!-- Theme Palette Selector -->
+                    <div x-data="{ open: false }" class="relative">
+                        <button
+                            @click="open = !open"
+                            class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-dark-700/50 border border-dark-600 hover:border-accent-blue transition"
+                        >
+                            <svg
+                                class="w-4 h-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+                                />
+                            </svg>
+                            <span class="hidden sm:inline">Theme</span>
+                        </button>
+
+                        <div
+                            x-show="open"
+                            @click.away="open = false"
+                            x-transition:enter="transition ease-out duration-100"
+                            x-transition:enter-start="opacity-0 scale-95"
+                            x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-75"
+                            x-transition:leave-start="opacity-100 scale-100"
+                            x-transition:leave-end="opacity-0 scale-95"
+                            class="absolute right-0 mt-2 w-40 rounded-lg bg-dark-800 border border-dark-600 shadow-xl overflow-hidden"
+                        >
+                            <!-- Tokyo -->
                             <button
-                                @click="submenu = submenu === 'tokyo' ? null : 'tokyo'"
+                                @click="setPalette('tokyo'); open = false"
                                 class="w-full px-4 py-2.5 hover:bg-dark-700 transition flex items-center gap-3"
-                                :class="document.documentElement.getAttribute('data-theme')?.startsWith('tokyo') ? 'text-accent-cyan' : ''"
+                                :class="currentPalette === 'tokyo' ? 'text-accent-cyan' : ''"
                             >
                                 <span
                                     class="w-3 h-3 rounded-full bg-[#7aa2f7]"
                                 ></span>
                                 <span class="flex-1 text-left">Tokyo</span>
-                                <svg
-                                    class="w-4 h-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M9 5l7 7-7 7"
-                                    />
-                                </svg>
                             </button>
-                            <div
-                                x-show="submenu === 'tokyo'"
-                                x-transition
-                                class="absolute left-full top-0 ml-1 flex items-center gap-1 px-2 py-1.5 rounded-lg bg-dark-800 border border-dark-600 shadow-xl text-sm"
-                            >
-                                <button
-                                    @click="setTheme('tokyo'); open = false"
-                                    class="px-2 py-1 rounded hover:bg-dark-600 transition"
-                                    :class="document.documentElement.getAttribute('data-theme') === 'tokyo' ? 'bg-dark-600 text-accent-cyan' : ''"
-                                >
-                                    Dark
-                                </button>
-                                <button
-                                    @click="setTheme('tokyo-light'); open = false"
-                                    class="px-2 py-1 rounded hover:bg-dark-600 transition"
-                                    :class="document.documentElement.getAttribute('data-theme') === 'tokyo-light' ? 'bg-dark-600 text-accent-cyan' : ''"
-                                >
-                                    Light
-                                </button>
-                            </div>
-                        </div>
 
-                        <!-- Catppuccin -->
-                        <div class="relative">
+                            <!-- Catppuccin -->
                             <button
-                                @click="submenu = submenu === 'catppuccin' ? null : 'catppuccin'"
+                                @click="setPalette('catppuccin'); open = false"
                                 class="w-full px-4 py-2.5 hover:bg-dark-700 transition flex items-center gap-3"
-                                :class="document.documentElement.getAttribute('data-theme')?.startsWith('catppuccin') ? 'text-accent-cyan' : ''"
+                                :class="currentPalette === 'catppuccin' ? 'text-accent-cyan' : ''"
                             >
                                 <span
                                     class="w-3 h-3 rounded-full bg-[#cba6f7]"
                                 ></span>
                                 <span class="flex-1 text-left">Catppuccin</span>
-                                <svg
-                                    class="w-4 h-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M9 5l7 7-7 7"
-                                    />
-                                </svg>
                             </button>
-                            <div
-                                x-show="submenu === 'catppuccin'"
-                                x-transition
-                                class="absolute left-full top-0 ml-1 flex items-center gap-1 px-2 py-1.5 rounded-lg bg-dark-800 border border-dark-600 shadow-xl text-sm"
-                            >
-                                <button
-                                    @click="setTheme('catppuccin'); open = false"
-                                    class="px-2 py-1 rounded hover:bg-dark-600 transition"
-                                    :class="document.documentElement.getAttribute('data-theme') === 'catppuccin' ? 'bg-dark-600 text-accent-cyan' : ''"
-                                >
-                                    Dark
-                                </button>
-                                <button
-                                    @click="setTheme('catppuccin-light'); open = false"
-                                    class="px-2 py-1 rounded hover:bg-dark-600 transition"
-                                    :class="document.documentElement.getAttribute('data-theme') === 'catppuccin-light' ? 'bg-dark-600 text-accent-cyan' : ''"
-                                >
-                                    Light
-                                </button>
-                            </div>
-                        </div>
 
-                        <!-- Gruvbox -->
-                        <div class="relative">
+                            <!-- Gruvbox -->
                             <button
-                                @click="submenu = submenu === 'gruvbox' ? null : 'gruvbox'"
+                                @click="setPalette('gruvbox'); open = false"
                                 class="w-full px-4 py-2.5 hover:bg-dark-700 transition flex items-center gap-3"
-                                :class="document.documentElement.getAttribute('data-theme')?.startsWith('gruvbox') ? 'text-accent-cyan' : ''"
+                                :class="currentPalette === 'gruvbox' ? 'text-accent-cyan' : ''"
                             >
                                 <span
                                     class="w-3 h-3 rounded-full bg-[#fe8019]"
@@ -174,137 +151,34 @@
                                 <span class="flex-1 text-left">Gruvbox</span>
                                 <span
                                     class="text-[#fabd2f] text-sm leading-none"
-                                    style="font-family: system-ui, sans-serif"
-                                    >★</span
+                                    style="font-family: system-ui"
+                                    >&#9733;</span
                                 >
-                                <svg
-                                    class="w-4 h-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M9 5l7 7-7 7"
-                                    />
-                                </svg>
                             </button>
-                            <div
-                                x-show="submenu === 'gruvbox'"
-                                x-transition
-                                class="absolute left-full top-0 ml-1 flex items-center gap-1 px-2 py-1.5 rounded-lg bg-dark-800 border border-dark-600 shadow-xl text-sm"
-                            >
-                                <button
-                                    @click="setTheme('gruvbox'); open = false"
-                                    class="px-2 py-1 rounded hover:bg-dark-600 transition"
-                                    :class="document.documentElement.getAttribute('data-theme') === 'gruvbox' ? 'bg-dark-600 text-accent-cyan' : ''"
-                                >
-                                    Dark
-                                </button>
-                                <button
-                                    @click="setTheme('gruvbox-light'); open = false"
-                                    class="px-2 py-1 rounded hover:bg-dark-600 transition"
-                                    :class="document.documentElement.getAttribute('data-theme') === 'gruvbox-light' ? 'bg-dark-600 text-accent-cyan' : ''"
-                                >
-                                    Light
-                                </button>
-                            </div>
-                        </div>
 
-                        <!-- Material -->
-                        <div class="relative">
+                            <!-- Material -->
                             <button
-                                @click="submenu = submenu === 'material' ? null : 'material'"
+                                @click="setPalette('material'); open = false"
                                 class="w-full px-4 py-2.5 hover:bg-dark-700 transition flex items-center gap-3"
-                                :class="document.documentElement.getAttribute('data-theme')?.startsWith('material') ? 'text-accent-cyan' : ''"
+                                :class="currentPalette === 'material' ? 'text-accent-cyan' : ''"
                             >
                                 <span
                                     class="w-3 h-3 rounded-full bg-[#82aaff]"
                                 ></span>
                                 <span class="flex-1 text-left">Material</span>
-                                <svg
-                                    class="w-4 h-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M9 5l7 7-7 7"
-                                    />
-                                </svg>
                             </button>
-                            <div
-                                x-show="submenu === 'material'"
-                                x-transition
-                                class="absolute left-full top-0 ml-1 flex items-center gap-1 px-2 py-1.5 rounded-lg bg-dark-800 border border-dark-600 shadow-xl text-sm"
-                            >
-                                <button
-                                    @click="setTheme('material'); open = false"
-                                    class="px-2 py-1 rounded hover:bg-dark-600 transition"
-                                    :class="document.documentElement.getAttribute('data-theme') === 'material' ? 'bg-dark-600 text-accent-cyan' : ''"
-                                >
-                                    Dark
-                                </button>
-                                <button
-                                    @click="setTheme('material-light'); open = false"
-                                    class="px-2 py-1 rounded hover:bg-dark-600 transition"
-                                    :class="document.documentElement.getAttribute('data-theme') === 'material-light' ? 'bg-dark-600 text-accent-cyan' : ''"
-                                >
-                                    Light
-                                </button>
-                            </div>
-                        </div>
 
-                        <!-- Nord -->
-                        <div class="relative">
+                            <!-- Nord -->
                             <button
-                                @click="submenu = submenu === 'nord' ? null : 'nord'"
+                                @click="setPalette('nord'); open = false"
                                 class="w-full px-4 py-2.5 hover:bg-dark-700 transition flex items-center gap-3"
-                                :class="document.documentElement.getAttribute('data-theme')?.startsWith('nord') ? 'text-accent-cyan' : ''"
+                                :class="currentPalette === 'nord' ? 'text-accent-cyan' : ''"
                             >
                                 <span
                                     class="w-3 h-3 rounded-full bg-[#88c0d0]"
                                 ></span>
                                 <span class="flex-1 text-left">Nord</span>
-                                <svg
-                                    class="w-4 h-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M9 5l7 7-7 7"
-                                    />
-                                </svg>
                             </button>
-                            <div
-                                x-show="submenu === 'nord'"
-                                x-transition
-                                class="absolute left-full top-0 ml-1 flex items-center gap-1 px-2 py-1.5 rounded-lg bg-dark-800 border border-dark-600 shadow-xl text-sm"
-                            >
-                                <button
-                                    @click="setTheme('nord'); open = false"
-                                    class="px-2 py-1 rounded hover:bg-dark-600 transition"
-                                    :class="document.documentElement.getAttribute('data-theme') === 'nord' ? 'bg-dark-600 text-accent-cyan' : ''"
-                                >
-                                    Dark
-                                </button>
-                                <button
-                                    @click="setTheme('nord-light'); open = false"
-                                    class="px-2 py-1 rounded hover:bg-dark-600 transition"
-                                    :class="document.documentElement.getAttribute('data-theme') === 'nord-light' ? 'bg-dark-600 text-accent-cyan' : ''"
-                                >
-                                    Light
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -359,6 +233,141 @@
                     class="px-4 py-2 text-sm text-text-muted hover:text-text-primary uppercase tracking-wider transition-colors duration-200"
                     >Gallery</a
                 >
+            </div>
+
+            <!-- Divider -->
+            <div class="w-px h-6 bg-white/10"></div>
+
+            <!-- Theme Controls (Compact) -->
+            <div class="flex items-center gap-1 px-2">
+                <!-- Dark/Light Toggle -->
+                <button
+                    @click="toggleMode()"
+                    class="p-2 rounded-full hover:bg-white/5 transition-colors duration-200"
+                    :title="currentMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+                >
+                    <!-- Sun icon (shown in dark mode - click to go light) -->
+                    <svg
+                        x-show="currentMode === 'dark'"
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                        />
+                    </svg>
+                    <!-- Moon icon (shown in light mode - click to go dark) -->
+                    <svg
+                        x-show="currentMode === 'light'"
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                        />
+                    </svg>
+                </button>
+
+                <!-- Theme Palette (Mini) -->
+                <div x-data="{ open: false }" class="relative">
+                    <button
+                        @click="open = !open"
+                        class="p-2 rounded-full hover:bg-white/5 transition-colors duration-200"
+                        title="Change theme"
+                    >
+                        <svg
+                            class="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+                            />
+                        </svg>
+                    </button>
+
+                    <div
+                        x-show="open"
+                        @click.away="open = false"
+                        x-transition:enter="transition ease-out duration-100"
+                        x-transition:enter-start="opacity-0 scale-95"
+                        x-transition:enter-end="opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-75"
+                        x-transition:leave-start="opacity-100 scale-100"
+                        x-transition:leave-end="opacity-0 scale-95"
+                        class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-40 rounded-lg bg-dark-800/95 backdrop-blur-xl border border-white/10 shadow-xl overflow-hidden"
+                    >
+                        <button
+                            @click="setPalette('tokyo'); open = false"
+                            class="w-full px-4 py-2 hover:bg-white/5 transition flex items-center gap-3 text-sm"
+                            :class="currentPalette === 'tokyo' ? 'text-accent-cyan' : ''"
+                        >
+                            <span
+                                class="w-2.5 h-2.5 rounded-full bg-[#7aa2f7]"
+                            ></span>
+                            <span>Tokyo</span>
+                        </button>
+                        <button
+                            @click="setPalette('catppuccin'); open = false"
+                            class="w-full px-4 py-2 hover:bg-white/5 transition flex items-center gap-3 text-sm"
+                            :class="currentPalette === 'catppuccin' ? 'text-accent-cyan' : ''"
+                        >
+                            <span
+                                class="w-2.5 h-2.5 rounded-full bg-[#cba6f7]"
+                            ></span>
+                            <span>Catppuccin</span>
+                        </button>
+                        <button
+                            @click="setPalette('gruvbox'); open = false"
+                            class="w-full px-4 py-2 hover:bg-white/5 transition flex items-center gap-3 text-sm"
+                            :class="currentPalette === 'gruvbox' ? 'text-accent-cyan' : ''"
+                        >
+                            <span
+                                class="w-2.5 h-2.5 rounded-full bg-[#fe8019]"
+                            ></span>
+                            <span class="flex-1 text-left">Gruvbox</span>
+                            <span
+                                class="text-[#fabd2f] text-xs"
+                                style="font-family: system-ui"
+                                >&#9733;</span
+                            >
+                        </button>
+                        <button
+                            @click="setPalette('material'); open = false"
+                            class="w-full px-4 py-2 hover:bg-white/5 transition flex items-center gap-3 text-sm"
+                            :class="currentPalette === 'material' ? 'text-accent-cyan' : ''"
+                        >
+                            <span
+                                class="w-2.5 h-2.5 rounded-full bg-[#82aaff]"
+                            ></span>
+                            <span>Material</span>
+                        </button>
+                        <button
+                            @click="setPalette('nord'); open = false"
+                            class="w-full px-4 py-2 hover:bg-white/5 transition flex items-center gap-3 text-sm"
+                            :class="currentPalette === 'nord' ? 'text-accent-cyan' : ''"
+                        >
+                            <span
+                                class="w-2.5 h-2.5 rounded-full bg-[#88c0d0]"
+                            ></span>
+                            <span>Nord</span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <!-- Divider -->
