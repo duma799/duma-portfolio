@@ -81,15 +81,13 @@ async def platform_page(request: Request, platform: str):
 
 @app.get("/gallery")
 async def gallery(request: Request):
-    """Gallery page showing desktop screenshots."""
     gallery_dir = Path("static/images/gallery")
     images = []
 
     if gallery_dir.exists():
         for file in sorted(gallery_dir.iterdir(), key=lambda x: x.stat().st_mtime, reverse=True):
             if file.suffix.lower() in [".png", ".jpg", ".jpeg", ".webp", ".gif", ".mp4"]:
-                # Parse filename for metadata: platform_title_description.ext
-                # e.g., hyprland_tokyo-night_clean-desktop.png
+                # filename format: platform_title_description.ext
                 name_parts = file.stem.split("_")
                 platform = name_parts[0] if len(name_parts) > 0 else "other"
                 title = (
