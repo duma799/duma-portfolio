@@ -4,7 +4,7 @@ from typing import Dict, List, Optional
 
 from app.config import get_settings
 from app.core.github_client import github_client
-from app.models.keybind import RepoInfo
+from app.models.keybind import ChangelogEntry, RepoInfo
 
 settings = get_settings()
 
@@ -59,6 +59,39 @@ class GitHubService:
         if not repo:
             return None
         return await github_client.get_readme(repo)
+
+    async def get_changelog(self, repo: str) -> List[ChangelogEntry]:
+        # Try releases first
+        releases = await github_client.get_releases(repo)
+        if releases:
+            return [
+                ChangelogEntry(
+                    version=r.get("tag_name"),
+                    title=r.get("name") or r.get("tag_name", "Release"),
+                    body=r.get("body"),
+                    date=r.get("published_at", "")[:10],
+                    url=r.get("html_url", ""),
+                    type="release",
+                )
+                for r in releases
+            ]
+
+        # Fall back to commits
+        commits = await github_client.get_commits(repo)
+        if commits:
+            return [
+                ChangelogEntry(
+                    title=c.get("commit", {}).get("message", "").split("\n")[0],
+                    body="\n".join(c.get("commit", {}).get("message", "").split("\n")[1:]).strip()
+                    or None,
+                    date=c.get("commit", {}).get("author", {}).get("date", "")[:10],
+                    url=c.get("html_url", ""),
+                    type="commit",
+                )
+                for c in commits
+            ]
+
+        return []
 
 
 github_service = GitHubService()

@@ -26,3 +26,9 @@ async def get_readme(platform: str):
     if not readme:
         raise HTTPException(status_code=404, detail=f"README not found for {platform}")
     return {"content": readme}
+
+
+@router.get("/changelog/{repo:path}")
+async def get_changelog(repo: str):
+    changelog = await github_service.get_changelog(repo)
+    return changelog

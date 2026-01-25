@@ -62,6 +62,24 @@ class GitHubClient:
                 return self._fix_relative_urls(content, repo, branch)
         return None
 
+    async def get_releases(self, repo: str, per_page: int = 10) -> Optional[List[Dict]]:
+        url = f"{self.BASE_URL}/repos/{repo}/releases"
+        params = {"per_page": per_page}
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(url, headers=self.headers, params=params)
+            if resp.status_code == 200:
+                return resp.json()
+            return None
+
+    async def get_commits(self, repo: str, per_page: int = 10) -> Optional[List[Dict]]:
+        url = f"{self.BASE_URL}/repos/{repo}/commits"
+        params = {"per_page": per_page}
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(url, headers=self.headers, params=params)
+            if resp.status_code == 200:
+                return resp.json()
+            return None
+
     def _fix_relative_urls(self, content: str, repo: str, branch: str) -> str:
         """Convert relative image/link paths to absolute GitHub raw URLs."""
         raw_base = f"{self.RAW_URL}/{repo}/{branch}"
