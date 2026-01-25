@@ -19,6 +19,57 @@
         </div>
     </div>
 </section>
+
+<!-- Changelog Modal -->
+<div
+    id="changelog-modal"
+    class="fixed inset-0 z-50 hidden"
+    x-data="{ show: false }"
+    x-show="show"
+    x-cloak
+>
+    <div
+        class="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        @click="show = false; document.getElementById('changelog-modal').classList.add('hidden')"
+    ></div>
+    <div
+        class="absolute inset-4 md:inset-10 lg:inset-20 bg-dark-800 rounded-xl border border-dark-600 overflow-hidden flex flex-col"
+    >
+        <div
+            class="flex items-center justify-between p-4 border-b border-dark-600"
+        >
+            <h2
+                id="changelog-title"
+                class="text-xl font-semibold text-text-primary"
+            >
+                Changelog
+            </h2>
+            <button
+                @click="show = false; document.getElementById('changelog-modal').classList.add('hidden')"
+                class="text-text-muted hover:text-text-primary transition"
+            >
+                <svg
+                    class="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                    ></path>
+                </svg>
+            </button>
+        </div>
+        <div id="changelog-content" class="flex-1 overflow-y-auto p-4">
+            <div class="text-center py-12 text-text-muted">
+                Loading changelog...
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %} {% block scripts %}
 <script>
     function escapeHtml(text) {
@@ -28,12 +79,80 @@
         return div.innerHTML;
     }
 
+    async function openChangelog(fullName, name) {
+        const modal = document.getElementById("changelog-modal");
+        const title = document.getElementById("changelog-title");
+        const content = document.getElementById("changelog-content");
+
+        title.textContent = `${name} - Changelog`;
+        content.innerHTML =
+            '<div class="text-center py-12 text-text-muted">Loading changelog...</div>';
+
+        modal.classList.remove("hidden");
+        modal.__x.$data.show = true;
+
+        try {
+            const response = await fetch(`/api/github/changelog/${fullName}`);
+            const entries = await response.json();
+
+            if (entries.length === 0) {
+                content.innerHTML =
+                    '<div class="text-center py-12 text-text-muted">No changelog entries found.</div>';
+                return;
+            }
+
+            const isCommits = entries[0].type === "commit";
+            let html = "";
+
+            if (isCommits) {
+                html +=
+                    '<p class="text-text-muted text-sm mb-6">No releases found. Showing recent commits:</p>';
+            }
+
+            entries.forEach((entry) => {
+                const version = entry.version ? escapeHtml(entry.version) : "";
+                const titleText = escapeHtml(entry.title);
+                const body = entry.body
+                    ? escapeHtml(entry.body).replace(/\n/g, "<br>")
+                    : "";
+                const date = escapeHtml(entry.date);
+                const url = encodeURI(entry.url);
+                const typeLabel =
+                    entry.type === "release" ? "Release" : "Commit";
+                const typeBg =
+                    entry.type === "release"
+                        ? "bg-accent-green/20 text-accent-green"
+                        : "bg-accent-blue/20 text-accent-blue";
+
+                html += `
+                <a href="${url}" target="_blank" rel="noopener noreferrer" class="block mb-4 p-4 bg-dark-700 rounded-lg border border-dark-600 hover:border-accent-blue transition">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-2">
+                            ${version ? `<span class="font-mono font-semibold text-text-primary">${version}</span>` : ""}
+                            <span class="text-xs px-2 py-0.5 rounded ${typeBg}">${typeLabel}</span>
+                        </div>
+                        <span class="text-sm text-text-muted">${date}</span>
+                    </div>
+                    <h3 class="text-text-primary font-medium mb-2">${titleText}</h3>
+                    ${body ? `<p class="text-text-secondary text-sm whitespace-pre-wrap">${body}</p>` : ""}
+                </a>
+                `;
+            });
+
+            content.innerHTML = html;
+        } catch (error) {
+            content.innerHTML =
+                '<div class="text-center py-12 text-red-400">Failed to load changelog.</div>';
+        }
+    }
+
     document.body.addEventListener("htmx:afterSwap", function (evt) {
         if (evt.detail.target.id === "projects-list") {
             const repos = JSON.parse(evt.detail.xhr.responseText);
             let html = "";
             repos.slice(0, 9).forEach((repo) => {
                 const name = escapeHtml(repo.name);
+                const fullName = escapeHtml(repo.full_name);
                 const description =
                     escapeHtml(repo.description) || "No description";
                 const language = escapeHtml(repo.language);
@@ -41,15 +160,21 @@
                 const stars = parseInt(repo.stargazers_count, 10) || 0;
 
                 html += `
-                <a href="${url}" target="_blank" rel="noopener noreferrer"
-                   class="bg-dark-700 rounded-xl p-6 border border-dark-600 hover:border-accent-blue hover:bg-dark-600 transition-all duration-300 block group">
-                    <h3 class="text-xl font-semibold mb-2 text-text-primary group-hover:text-accent-blue transition">${name}</h3>
-                    <p class="text-text-secondary text-sm mb-4">${description}</p>
-                    <div class="flex items-center gap-4 text-sm text-text-muted">
-                        ${language ? `<span>${language}</span>` : ""}
-                        <span>${stars} stars</span>
+                <div class="bg-dark-700 rounded-xl p-6 border border-dark-600 hover:border-accent-blue hover:bg-dark-600 transition-all duration-300 group">
+                    <a href="${url}" target="_blank" rel="noopener noreferrer" class="block">
+                        <h3 class="text-xl font-semibold mb-2 text-text-primary group-hover:text-accent-blue transition">${name}</h3>
+                        <p class="text-text-secondary text-sm mb-4">${description}</p>
+                    </a>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4 text-sm text-text-muted">
+                            ${language ? `<span>${language}</span>` : ""}
+                            <span>${stars} stars</span>
+                        </div>
+                        <button onclick="openChangelog('${fullName}', '${name}')" class="text-xs px-3 py-1 rounded-full bg-dark-600 text-text-muted hover:bg-accent-blue hover:text-white transition">
+                            Changelog
+                        </button>
                     </div>
-                </a>
+                </div>
             `;
             });
             evt.detail.target.innerHTML = html;
