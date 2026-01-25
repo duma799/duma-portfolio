@@ -8,6 +8,7 @@ from fastapi.templating import Jinja2Templates
 
 from app.api.routes import configs, github, keybinds
 from app.config import get_settings
+from app.services.github_service import github_service
 
 settings = get_settings()
 
@@ -33,7 +34,10 @@ app.include_router(github.router, prefix="/api/github", tags=["github"])
 
 @app.get("/")
 async def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request, "title": "Home"})
+    dotfiles_repos = await github_service.get_dotfiles_repos()
+    return templates.TemplateResponse(
+        "index.html", {"request": request, "title": "Home", "dotfiles_repos": dotfiles_repos}
+    )
 
 
 @app.get("/about")
