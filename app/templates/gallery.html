@@ -7,7 +7,6 @@
             themes.
         </p>
 
-        <!-- Filter Tabs -->
         <div x-data="{ activeFilter: 'all' }" class="mb-8">
             <div class="flex flex-wrap gap-2 mb-8">
                 <button
@@ -33,7 +32,6 @@
                 </button>
             </div>
 
-            <!-- Gallery Grid -->
             <div
                 class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                 id="gallery-grid"
@@ -102,7 +100,6 @@
                                 </span>
                             </div>
                         </div>
-                        <!-- Expand icon -->
                         <div
                             class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                         >
@@ -157,7 +154,6 @@
     </div>
 </section>
 
-<!-- Lightbox Modal -->
 <div id="lightbox" class="lightbox-overlay" onclick="closeLightbox(event)">
     <button class="lightbox-close" onclick="closeLightbox(event)">
         <svg
@@ -231,7 +227,6 @@
         document.body.style.overflow = "";
     }
 
-    // Close on escape key
     document.addEventListener("keydown", function (e) {
         if (e.key === "Escape") {
             closeLightbox();
