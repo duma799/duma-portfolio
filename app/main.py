@@ -87,7 +87,7 @@ async def gallery(request: Request):
 
     if gallery_dir.exists():
         for file in sorted(gallery_dir.iterdir(), key=lambda x: x.stat().st_mtime, reverse=True):
-            if file.suffix.lower() in [".png", ".jpg", ".jpeg", ".webp", ".gif"]:
+            if file.suffix.lower() in [".png", ".jpg", ".jpeg", ".webp", ".gif", ".mp4"]:
                 # Parse filename for metadata: platform_title_description.ext
                 # e.g., hyprland_tokyo-night_clean-desktop.png
                 name_parts = file.stem.split("_")
@@ -105,6 +105,7 @@ async def gallery(request: Request):
                         "title": title,
                         "description": description,
                         "platform": platform.lower(),
+                        "is_video": file.suffix.lower() == ".mp4",
                     }
                 )
 
