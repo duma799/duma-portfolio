@@ -1,3 +1,149 @@
+/* nav link hover effect */
+.nav-link {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+        90deg,
+        var(--accent-cyan),
+        var(--accent-blue),
+        var(--accent-purple)
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: currentColor;
+    transition: -webkit-text-fill-color 0.3s ease;
+}
+
+.nav-link:hover {
+    -webkit-text-fill-color: transparent;
+    animation: nav-gradient-shift 2s ease infinite;
+}
+
+.nav-link::before,
+.nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 50%;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        var(--accent-cyan),
+        var(--accent-blue),
+        var(--accent-purple)
+    );
+    background-size: 200% 100%;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.nav-link::before {
+    left: 50%;
+    transform-origin: left;
+}
+
+.nav-link::after {
+    right: 50%;
+    transform-origin: right;
+}
+
+.nav-link:hover::before,
+.nav-link:hover::after {
+    transform: scaleX(1);
+    animation: nav-gradient-shift 2s ease infinite;
+}
+
+@keyframes nav-gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* DUMA logo */
+.logo-duma {
+    text-decoration: none;
+}
+
+.logo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    width: 40px;
+    height: 40px;
+}
+
+.logo-letter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Silkscreen", "Press Start 2P", system-ui;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+    margin: -3px;
+    background: linear-gradient(
+        135deg,
+        var(--accent-cyan),
+        var(--accent-blue),
+        var(--accent-purple)
+    );
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: logo-gradient 4s ease infinite;
+}
+
+.logo-duma:hover .logo-letter {
+    animation: logo-gradient 1s ease infinite;
+}
+
+.logo-letter:nth-child(3) {
+    padding-left: 3px;
+}
+
+.logo-duma-sm .logo-grid {
+    width: 30px;
+    height: 30px;
+}
+
+.logo-duma-sm .logo-letter {
+    font-size: 18px;
+    margin: -2px;
+}
+
+@keyframes logo-gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Gruvbox DUMA logo */
+[data-theme="gruvbox"] .logo-letter,
+[data-theme="gruvbox-light"] .logo-letter {
+    background: none;
+    -webkit-text-fill-color: var(--accent-orange);
+    animation: none;
+}
+
+[data-theme="gruvbox"] .logo-duma:hover .logo-letter,
+[data-theme="gruvbox-light"] .logo-duma:hover .logo-letter {
+    -webkit-text-fill-color: var(--accent-yellow);
+}
+
 /* particles bg */
 .particles-bg {
     position: fixed;
@@ -378,6 +524,19 @@ footer {
     font-family: inherit;
 }
 
+/* Gruvbox - keep rounded elements in floating nav */
+[data-theme="gruvbox"] nav .rounded-full,
+[data-theme="gruvbox-light"] nav .rounded-full {
+    border-radius: 9999px !important;
+}
+
+/* Gruvbox - remove border from nav SVG icons */
+[data-theme="gruvbox"] nav svg,
+[data-theme="gruvbox-light"] nav svg {
+    border: none !important;
+    outline: none !important;
+}
+
 /* Gruvbox terminal */
 [data-theme="gruvbox"] .terminal-window {
     background: var(--dark-900);
@@ -471,6 +630,73 @@ footer {
 
 [data-theme="gruvbox"] nav a:hover {
     color: var(--accent-orange) !important;
+}
+
+/* Gruvbox nav-link terminal effect - stepped dash underline */
+[data-theme="gruvbox"] .nav-link,
+[data-theme="gruvbox-light"] .nav-link {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+}
+
+[data-theme="gruvbox"] .nav-link::before,
+[data-theme="gruvbox"] .nav-link::after,
+[data-theme="gruvbox-light"] .nav-link::before,
+[data-theme="gruvbox-light"] .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    background: var(--accent-orange);
+    width: 0;
+    transition: none;
+    transform: none;
+}
+
+[data-theme="gruvbox"] .nav-link::before,
+[data-theme="gruvbox-light"] .nav-link::before {
+    left: 50%;
+}
+
+[data-theme="gruvbox"] .nav-link::after,
+[data-theme="gruvbox-light"] .nav-link::after {
+    right: 50%;
+}
+
+[data-theme="gruvbox"] .nav-link:hover::before,
+[data-theme="gruvbox-light"] .nav-link:hover::before {
+    animation: gruvbox-dash-grow 0.4s steps(4, jump-none) forwards;
+}
+
+[data-theme="gruvbox"] .nav-link:hover::after,
+[data-theme="gruvbox-light"] .nav-link:hover::after {
+    animation: gruvbox-dash-grow 0.4s steps(4, jump-none) forwards;
+}
+
+[data-theme="gruvbox"] .nav-link:hover,
+[data-theme="gruvbox-light"] .nav-link:hover {
+    color: var(--accent-orange) !important;
+    -webkit-text-fill-color: var(--accent-orange);
+    animation: none;
+}
+
+@keyframes gruvbox-dash-grow {
+    0%,
+    24% {
+        width: 0;
+    }
+    25%,
+    49% {
+        width: 16%;
+    }
+    50%,
+    74% {
+        width: 32%;
+    }
+    75%,
+    100% {
+        width: 50%;
+    }
 }
 
 /* Gruvbox gradient text - solid orange */
@@ -969,6 +1195,27 @@ footer {
 [data-theme="gruvbox"] .gallery-item:hover,
 [data-theme="gruvbox-light"] .gallery-item:hover {
     transform: none;
+}
+
+/* Gruvbox gallery filter buttons */
+[data-theme="gruvbox"] button[class*="bg-accent-blue"],
+[data-theme="gruvbox-light"] button[class*="bg-accent-blue"] {
+    background: var(--accent-orange) !important;
+    color: var(--dark-900) !important;
+    border: 2px solid var(--accent-orange) !important;
+}
+
+[data-theme="gruvbox"] button[class*="bg-dark-700"],
+[data-theme="gruvbox-light"] button[class*="bg-dark-700"] {
+    background: var(--dark-800) !important;
+    border: 2px solid var(--dark-600) !important;
+}
+
+[data-theme="gruvbox"] button[class*="bg-dark-700"]:hover,
+[data-theme="gruvbox-light"] button[class*="bg-dark-700"]:hover {
+    background: var(--dark-700) !important;
+    border-color: var(--accent-orange) !important;
+    color: var(--accent-orange) !important;
 }
 
 [data-theme="gruvbox"] .gallery-item > div,
