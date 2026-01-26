@@ -6,6 +6,12 @@
         <title>{{ title }} | Duma</title>
         <link rel="icon" type="image/png" href="/static/images/dumalogo.png" />
         <link rel="apple-touch-icon" href="/static/images/dumalogo.png" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap"
+            rel="stylesheet"
+        />
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://unpkg.com/htmx.org@1.9.10"></script>
         <script
@@ -373,7 +379,7 @@
             })();
         </script>
         <style>
-            @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap");
+            @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Quantico:wght@400;700&display=swap");
             @font-face {
                 font-family: "SF Pro Display";
                 src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff2")
@@ -403,11 +409,7 @@
                 font-style: normal;
             }
             body {
-                font-family:
-                    "SF Pro Display",
-                    -apple-system,
-                    BlinkMacSystemFont,
-                    sans-serif;
+                font-family: "Quantico", sans-serif;
             }
             code,
             .mono {
